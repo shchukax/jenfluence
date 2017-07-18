@@ -1,0 +1,259 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE module PUBLIC "-//Puppy Crawl//DTD Check Configuration 1.3//EN"
+        "http://www.puppycrawl.com/dtds/configuration_1_3.dtd">
+
+<module name="Checker">
+
+    <module name="SuppressionFilter">
+        <property name="file" value="${samedir}/suppressions.xml"/>
+    </module>
+
+    <property name="severity" value="warning"/>
+    <property name="charset" value="UTF-8"/>
+
+    <!-- **************** File related modules **************** -->
+
+    <module name="FileLength">
+        <property name="fileExtensions" value="java,properties"/>
+        <property name="max" value="1800"/>
+    </module>
+
+    <module name="FileTabCharacter">
+        <property name="fileExtensions" value="java"/>
+    </module>
+
+    <module name="UniqueProperties">
+        <property name="fileExtensions" value="properties"/>
+    </module>
+
+    <!-- **************** Suppressions Module **************** -->
+
+    <module name="SuppressionCommentFilter">
+        <property name="offCommentFormat" value="CHECKSTYLE.OFF\:\s*([\w\|]+)"/>
+        <property name="onCommentFormat" value="CHECKSTYLE.ON\:\s*([\w\|]+)"/>
+        <property name="checkFormat" value="$1"/>
+    </module>
+
+    <module name="TreeWalker">
+        <property name="fileExtensions" value="java"/>
+
+        <module name="FileContentsHolder"/>
+
+        <!-- **************** Blocks **************** -->
+
+        <module name="EmptyBlock">
+            <property name="option" value="text"/>
+        </module>
+
+        <module name="LeftCurly"/>
+        <module name="RightCurly"/>
+        <module name="AvoidNestedBlocks"/>
+
+        <module name="NeedBraces">
+            <property name="tokens" value=" LITERAL_DO, LITERAL_ELSE, LITERAL_FOR, LITERAL_WHILE"/>
+        </module>
+
+        <!-- **************** Whitespace **************** -->
+
+        <module name="GenericWhitespace"/>
+        <module name="EmptyForIteratorPad"/>
+        <module name="MethodParamPad">
+            <property name="severity" value="error"/>
+        </module>
+        <module name="NoWhitespaceAfter">
+            <property name="tokens" value="BNOT,DEC,DOT,INC,LNOT,UNARY_MINUS,UNARY_PLUS"/>
+        </module>
+        <module name="NoWhitespaceBefore"/>
+        <module name="OperatorWrap"/>
+        <module name="ParenPad"/>
+        <module name="TypecastParenPad"/>
+        <module name="WhitespaceAfter"/>
+
+        <!-- **************** Import statements **************** -->
+
+        <module name="AvoidStarImport"/>
+        <module name="IllegalImport"/>
+        <module name="RedundantImport"/>
+        <module name="UnusedImports">
+            <property name="processJavadoc" value="true"/>
+        </module>
+
+        <!-- **************** Naming conventions **************** -->
+
+        <module name="TypeName"/>
+        <module name="MethodName"/>
+        <module name="MemberName"/>
+        <module name="StaticVariableName"/>
+        <module name="LocalFinalVariableName"/>
+        <module name="ParameterName"/>
+        <module name="PackageName"/>
+
+        <module name="LocalVariableName">
+            <property name="format" value="^[a-z][a-zA-Z0-9_]*$"/>
+            <property name="allowOneCharVarInForLoop" value="true"/>
+        </module>
+
+        <module name="ConstantName">
+            <property name="format" value="^([A-Z][A-Z0-9]*(_[A-Z0-9]+)*|log|logger)$"/>
+        </module>
+
+        <!-- **************** Modifiers **************** -->
+
+        <module name="ModifierOrder"/>
+        <module name="RedundantModifier"/>
+
+        <!-- **************** Javadoc comments **************** -->
+
+        <module name="JavadocType">
+            <property name="allowMissingParamTags" value="true"/>
+            <property name="allowUnknownTags" value="true"/>
+        </module>
+
+        <module name="JavadocMethod">
+            <property name="scope" value="protected"/>
+            <property name="excludeScope" value="private"/>
+            <property name="allowMissingPropertyJavadoc" value="true"/>
+            <property name="allowUndeclaredRTE" value="true"/>
+            <property name="allowMissingJavadoc" value="false"/>
+        </module>
+
+        <!-- the ignoreNamePattern below skips constant fields -->
+        <module name="JavadocVariable">
+            <property name="scope" value="public"/>
+            <property name="ignoreNamePattern" value="^([A-Z][A-Z0-9]*(_[A-Z0-9]+)*|log|logger)$"/>
+        </module>
+
+        <module name="JavadocStyle">
+            <property name="checkFirstSentence" value="false"/>
+            <property name="endOfSentenceFormat" value="false"/>
+            <property name="checkHtml" value="true"/>
+        </module>
+
+        <!-- **************** Annotations **************** -->
+
+        <module name="MissingOverride"/>
+        <module name="MissingDeprecated"/>
+
+        <module name="AnnotationLocation">
+            <property name="allowSamelineMultipleAnnotations" value="true"/>
+            <property name="allowSamelineSingleParameterlessAnnotation" value="true"/>
+            <property name="allowSamelineParameterizedAnnotation" value="true"/>
+        </module>
+
+        <!-- **************** Class design **************** -->
+
+        <module name="VisibilityModifier"/>
+        <module name="HideUtilityClassConstructor"/>
+        <module name="OneTopLevelClass"/>
+        <module name="MutableException"/>
+        <module name="FinalClass"/>
+
+        <!-- **************** Coding **************** -->
+
+        <module name="CovariantEquals"/>
+        <module name="DeclarationOrder">
+            <property name="ignoreConstructors" value="true"/>
+        </module>
+        <module name="DefaultComesLast"/>
+        <module name="MultipleStringLiterals">
+            <property name="allowedDuplicates" value="3"/>
+            <property name="ignoreStringsRegexp" value="^(&quot;&quot;)|(&quot;\W{1,2}&quot;)$"/>
+        </module>
+        <module name="EmptyStatement"/>
+        <module name="EqualsHashCode"/>
+        <module name="FallThrough"/>
+        <module name="HiddenField">
+            <property name="ignoreConstructorParameter" value="true"/>
+            <property name="ignoreSetter" value="true"/>
+            <property name="ignoreAbstractMethods" value="true"/>
+        </module>
+        <module name="IllegalInstantiation">
+            <property name="classes" value="java.lang.Boolean,java.lang.Integer,java.lang.Long,java.lang.Double"/>
+        </module>
+        <module name="InnerAssignment">
+            <property name="tokens" value="ASSIGN"/>
+        </module>
+        <module name="MagicNumber">
+            <property name="ignoreNumbers"
+                      value="-1,0,1,2,3,4,5,10,16,32,64,100,127,128,255,256,512,1000,1024,2048,4096"/>
+            <property name="ignoreAnnotation" value="true"/>
+            <property name="ignoreHashCodeMethod" value="true"/>
+        </module>
+        <module name="MissingSwitchDefault"/>
+        <module name="NestedForDepth">
+            <property name="max" value="3"/>
+        </module>
+        <module name="NestedIfDepth">
+            <property name="max" value="3"/>
+        </module>
+        <module name="NoClone"/>
+        <module name="NoFinalizer"/>
+        <module name="OneStatementPerLine"/>
+        <module name="ParameterAssignment">
+            <property name="severity" value="error"/>
+        </module>
+        <module name="SimplifyBooleanReturn"/>
+        <module name="StringLiteralEquality"/>
+
+
+        <!-- **************** Miscellaneous **************** -->
+
+        <module name="ArrayTypeStyle"/>
+        <module name="FinalParameters"/>
+        <module name="OuterTypeFilename"/>
+        <module name="UpperEll"/>
+
+
+        <!-- **************** Metrics **************** -->
+
+        <module name="BooleanExpressionComplexity">
+            <property name="max" value="6"/>
+        </module>
+        <module name="CyclomaticComplexity">
+            <property name="max" value="15"/>
+            <property name="severity" value="info"/>
+        </module>
+
+        <!-- **************** Size Violations **************** -->
+
+        <module name="LineLength">
+            <property name="severity" value="info"/>
+            <property name="max" value="150"/>
+        </module>
+        <module name="MethodLength"/>
+        <module name="AnonInnerLength">
+            <property name="max" value="30"/>
+        </module>
+        <module name="ParameterNumber">
+            <property name="max" value="6"/>
+            <property name="ignoreOverriddenMethods" value="true"/>
+        </module>
+
+        <module name="OuterTypeNumber"/>
+
+        <!-- **************** Custom regular expressions **************** -->
+
+        <module name="RegexpSinglelineJava">
+            <property name="format" value="System.(out|err).print"/>
+            <property name="message" value="Use a Logger instead!"/>
+        </module>
+        <module name="RegexpSinglelineJava">
+            <property name="format" value="printStackTrace"/>
+            <property name="message" value="Log the exception instead!"/>
+        </module>
+        <module name="RegexpSinglelineJava">
+            <property name="format" value="serialVersionUID = 1L;"/>
+            <property name="message" value="serialVersionUID must be unique, please generate a new one!"/>
+        </module>
+        <module name="RegexpSinglelineJava">
+            <property name="format" value="(class|interface|enum) [a-zA-Z0-9]*[A-Z][A-Z][A-Z]"/>
+            <property name="message"
+                      value="name convention: abbreviations should not be uppercased (XmlClass instead of XMLClass)"/>
+        </module>
+        <module name="RegexpSinglelineJava">
+            <property name="format" value="java.util.(Date|Calendar)"/>
+            <property name="message" value="Use proper time/date classes instead!"/>
+        </module>
+
+    </module>
+</module>

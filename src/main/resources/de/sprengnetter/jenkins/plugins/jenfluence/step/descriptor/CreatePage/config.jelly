@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?jelly escape-by-default='true'?>
+<j:jelly
+        xmlns:j="jelly:core"
+        xmlns:st="jelly:stapler"
+        xmlns:d="jelly:define"
+        xmlns:l="/lib/layout"
+        xmlns:t="/lib/hudson"
+        xmlns:f="/lib/form"
+        xmlns:i="jelly:fmt">
+
+    <f:entry field="title" title="Page title">
+        <f:textbox/>
+    </f:entry>
+
+    <f:entry field="spaceKey" title="Spacekey">
+        <f:textbox/>
+    </f:entry>
+
+    <f:entry field="parentId" title="ID of parent page (only if this page is becoming a child page)">
+        <f:textbox/>
+    </f:entry>
+
+    <f:entry field="content" title="Page content">
+        <f:textbox/>
+    </f:entry>
+
+</j:jelly>
