@@ -1,4 +1,4 @@
-package de.sprengnetter.jenkins.plugins.jenfluence.api.response;
+package de.sprengnetter.jenkins.plugins.jenfluence.result;
 
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;

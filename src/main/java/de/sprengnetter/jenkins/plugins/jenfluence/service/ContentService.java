@@ -3,7 +3,7 @@ package de.sprengnetter.jenkins.plugins.jenfluence.service;
 
 import de.sprengnetter.jenkins.plugins.jenfluence.api.Content;
 import de.sprengnetter.jenkins.plugins.jenfluence.api.Page;
-import de.sprengnetter.jenkins.plugins.jenfluence.api.response.PageCreated;
+import de.sprengnetter.jenkins.plugins.jenfluence.result.PageCreated;
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
