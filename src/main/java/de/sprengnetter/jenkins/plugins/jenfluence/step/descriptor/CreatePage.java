@@ -20,22 +20,23 @@ public class CreatePage extends AbstractStep {
 
     private String spaceKey;
 
-    private String parentId;
+    private Integer parentId;
 
     private String content;
 
     @DataBoundConstructor
     public CreatePage(final String title, final String spaceKey, final String parentId, final String content) {
+        super();
         this.title = title;
         this.spaceKey = spaceKey;
-        this.parentId = parentId;
+        this.parentId = Integer.parseInt(parentId);
         this.content = content;
     }
 
     @Override
     public StepExecution start(final StepContext context) throws Exception {
-        return new CreatePageExecution(this, context);
-    }  
+        return new CreatePageExecution(this, context, getSite());
+    }
 
     public String getTitle() {
         return title;
@@ -45,7 +46,7 @@ public class CreatePage extends AbstractStep {
         return spaceKey;
     }
 
-    public String getParentId() {
+    public Integer getParentId() {
         return parentId;
     }
 

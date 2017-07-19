@@ -22,6 +22,10 @@
             <f:textbox default="${descriptor.timeout()}"/>
         </f:entry>
 
+        <f:entry title="Connectionpool size" field="poolSize">
+            <f:textbox default="${descriptor.poolSize()}"/>
+        </f:entry>
+
         <f:entry title="Authentication type" field="authenticationType">
             <select name="authenticationType">
                 <option value="basic">Basic authentication</option>

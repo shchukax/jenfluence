@@ -1,8 +1,8 @@
 package de.sprengnetter.jenkins.plugins.jenfluence.step;
 
 import de.sprengnetter.jenkins.plugins.jenfluence.ConfluenceSite;
+import jenkins.model.Jenkins;
 import org.jenkinsci.plugins.workflow.steps.Step;
-import org.kohsuke.stapler.DataBoundSetter;
 
 import java.io.Serializable;
 
@@ -14,12 +14,21 @@ public abstract class AbstractStep extends Step implements Serializable {
 
     private ConfluenceSite site;
 
-    public ConfluenceSite getSite() {
-        return site;
+    public AbstractStep() {
+        ConfluenceSite.ConfluenceSiteDescriptor siteDescriptor = (ConfluenceSite.ConfluenceSiteDescriptor)
+                Jenkins.getInstance().getDescriptor(ConfluenceSite.class);
+
+        this.site = new ConfluenceSite(
+                siteDescriptor.getUsername(),
+                siteDescriptor.getPassword(),
+                siteDescriptor.getUrl(),
+                siteDescriptor.getAuthenticationType(),
+                siteDescriptor.getTimeout(),
+                siteDescriptor.getPoolSize()
+        );
     }
 
-    @DataBoundSetter
-    public void setSite(final ConfluenceSite site) {
-        this.site = site;
+    public ConfluenceSite getSite() {
+        return site;
     }
 }

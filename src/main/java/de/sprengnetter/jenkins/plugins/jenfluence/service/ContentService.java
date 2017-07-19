@@ -1,17 +1,20 @@
-package de.sprengnetter.jenkins.plugins.jenfluence.client;
+package de.sprengnetter.jenkins.plugins.jenfluence.service;
 
 
-import de.sprengnetter.jenkins.plugins.jenfluence.response.Content;
-import de.sprengnetter.jenkins.plugins.jenfluence.response.Page;
+import de.sprengnetter.jenkins.plugins.jenfluence.api.Content;
+import de.sprengnetter.jenkins.plugins.jenfluence.api.Page;
+import de.sprengnetter.jenkins.plugins.jenfluence.api.response.PageCreated;
 
 import javax.ws.rs.*;
+import javax.ws.rs.core.MediaType;
 
 /**
  * @author Oliver Breitenbach
  * @version 1.0.0
  */
 @Path(BaseService.BASE_RESOURCE + "/content")
-@Produces(BaseService.APPLICATION_JSON_UTF8)
+@Produces(MediaType.APPLICATION_JSON)
+@Consumes(MediaType.APPLICATION_JSON)
 public interface ContentService extends BaseService {
 
     @GET
@@ -30,6 +33,5 @@ public interface ContentService extends BaseService {
     Content getPage(@QueryParam("spaceKey") final String spaceKey, @QueryParam("title") final String title);
 
     @POST
-    @Consumes(APPLICATION_JSON_UTF8)
-    Content createPage(final Page page);
+    PageCreated createPage(final Page page);
 }

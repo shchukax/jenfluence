@@ -1,10 +1,9 @@
-package de.sprengnetter.jenkins.plugins.jenfluence.response;
+package de.sprengnetter.jenkins.plugins.jenfluence.api;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import de.sprengnetter.jenkins.plugins.jenfluence.api.Links;
-import de.sprengnetter.jenkins.plugins.jenfluence.api.Result;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -14,7 +13,7 @@ import java.util.List;
  * @version 1.0.0
  */
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class Content {
+public class Content implements Serializable {
 
     @JsonProperty("start")
     private Integer start;

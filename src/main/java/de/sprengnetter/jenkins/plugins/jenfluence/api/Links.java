@@ -1,10 +1,10 @@
 package de.sprengnetter.jenkins.plugins.jenfluence.api;
 
-import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -13,7 +13,7 @@ import java.util.Map;
  * @version 1.0.0
  */
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class Links {
+public class Links implements Serializable {
 
     @JsonProperty("webui")
     private String webUi;
@@ -24,7 +24,7 @@ public class Links {
     @JsonProperty("self")
     private String self;
 
-    private Map<String, Object> unknownFields = new HashMap<>();
+    private Map<String, Object> unmappedFields = new HashMap<>();
 
     public String getWebUi() {
         return webUi;
@@ -50,13 +50,12 @@ public class Links {
         this.self = self;
     }
 
-    @JsonAnyGetter
-    public Map<String, Object> getUnknownFields() {
-        return unknownFields;
+    public Map<String, Object> getUnmappedFields() {
+        return unmappedFields;
     }
 
     @JsonAnySetter
-    public void setUnknownFields(final String name, final Object o) {
-        unknownFields.put(name, o);
+    public void setUnmappedFields(String name, Object o) {
+        this.unmappedFields.put(name, o);
     }
 }

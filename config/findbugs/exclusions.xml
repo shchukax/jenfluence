@@ -8,7 +8,7 @@
     </Match>
 
     <Match>
-        <Package name="~de\.sprengnetter\.confluenkins\.model.*"/>
+        <Package name="~de\.sprengnetter\.jenkins\.plugins\.jenfluence\.api.*"/>
     </Match>
 
     <Match>

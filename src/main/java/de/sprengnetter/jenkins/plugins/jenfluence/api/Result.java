@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -13,10 +14,10 @@ import java.util.Map;
  * @version 1.0.0
  */
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class Result {
+public class Result implements Serializable {
 
     @JsonProperty("id")
-    private String id;
+    private Integer id;
 
     @JsonProperty("type")
     private String type;
@@ -38,11 +39,11 @@ public class Result {
 
     private Map<String, Object> unkownFields = new HashMap<>();
 
-    public String getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 

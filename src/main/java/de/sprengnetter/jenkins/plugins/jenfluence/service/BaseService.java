@@ -1,4 +1,4 @@
-package de.sprengnetter.jenkins.plugins.jenfluence.client;
+package de.sprengnetter.jenkins.plugins.jenfluence.service;
 
 /**
  * @author Oliver Breitenbach
@@ -7,6 +7,4 @@ package de.sprengnetter.jenkins.plugins.jenfluence.client;
 public interface BaseService {
 
     String BASE_RESOURCE = "/rest/api";
-
-    String APPLICATION_JSON_UTF8 = "application/json;charset=UTF-8";
 }

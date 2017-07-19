@@ -5,7 +5,6 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -14,20 +13,42 @@ import java.util.Map;
  * @version 1.0.0
  */
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class Space implements Serializable {
+public class CreatedBy {
 
-    @JsonProperty("key")
-    private String key;
+    @JsonProperty("username")
+    private String username;
+
+    @JsonProperty("displayName")
+    private String displayName;
+
+    @JsonProperty("userKey")
+    private String userKey;
 
     @JsonIgnore
     private Map<String, Object> unmappedFields = new HashMap<>();
 
-    public String getKey() {
-        return key;
+    public String getUsername() {
+        return username;
     }
 
-    public void setKey(String key) {
-        this.key = key;
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public String getDisplayName() {
+        return displayName;
+    }
+
+    public void setDisplayName(String displayName) {
+        this.displayName = displayName;
+    }
+
+    public String getUserKey() {
+        return userKey;
+    }
+
+    public void setUserKey(String userKey) {
+        this.userKey = userKey;
     }
 
     public Map<String, Object> getUnmappedFields() {

@@ -13,6 +13,7 @@ import org.kohsuke.stapler.StaplerRequest;
 
 import javax.annotation.Nonnull;
 import java.io.IOException;
+import java.io.Serializable;
 import java.net.*;
 
 /**
@@ -21,7 +22,7 @@ import java.net.*;
  * @author Oliver Breitenbach
  * @version 1.0.0
  */
-public class ConfluenceSite extends AbstractDescribableImpl<ConfluenceSite> {
+public class ConfluenceSite extends AbstractDescribableImpl<ConfluenceSite> implements Serializable {
 
     private String username;
 
@@ -33,15 +34,18 @@ public class ConfluenceSite extends AbstractDescribableImpl<ConfluenceSite> {
 
     private Integer timeout;
 
+    private Integer poolSize;
+
     private ConfluenceSiteDescriptor confluenceSiteDescriptor = new ConfluenceSiteDescriptor();
 
     @DataBoundConstructor
-    public ConfluenceSite(final String username, final String password, final URL url, final String authenticationType, final Integer timeout) {
+    public ConfluenceSite(final String username, final String password, final URL url, final AuthenticationType authenticationType, final Integer timeout, final Integer poolSize) {
         this.username = username;
         this.url = url;
         this.password = password;
-        this.authenticationType = AuthenticationType.fromString(authenticationType);
+        this.authenticationType = authenticationType;
         this.timeout = timeout;
+        this.poolSize = poolSize;
     }
 
     @Override
@@ -76,13 +80,13 @@ public class ConfluenceSite extends AbstractDescribableImpl<ConfluenceSite> {
         this.password = password;
     }
 
-    public String getAuthenticationType() {
-        return authenticationType.getType();
+    public AuthenticationType getAuthenticationType() {
+        return authenticationType;
     }
 
     @DataBoundSetter
-    public void setAuthenticationType(final String authenticationType) {
-        this.authenticationType = AuthenticationType.fromString(authenticationType);
+    public void setAuthenticationType(final AuthenticationType authenticationType) {
+        this.authenticationType = authenticationType;
     }
 
     public Integer getTimeout() {
@@ -94,14 +98,24 @@ public class ConfluenceSite extends AbstractDescribableImpl<ConfluenceSite> {
         this.timeout = timeout;
     }
 
+    public Integer getPoolSize() {
+        return poolSize;
+    }
+
+    @DataBoundSetter
+    public void setPoolSize(Integer poolSize) {
+        this.poolSize = poolSize;
+    }
+
     @Extension
-    public static final class ConfluenceSiteDescriptor extends Descriptor<ConfluenceSite> {
+    public static final class ConfluenceSiteDescriptor extends Descriptor<ConfluenceSite> implements Serializable {
 
         private String username;
         private String password;
         private String url;
         private AuthenticationType authenticationType;
         private Integer timeout;
+        private Integer poolSize;
 
         public ConfluenceSiteDescriptor() {
             super(ConfluenceSite.class);
@@ -121,6 +135,7 @@ public class ConfluenceSite extends AbstractDescribableImpl<ConfluenceSite> {
             url = json.getString("url");
             authenticationType = AuthenticationType.fromString(json.getString("authenticationType"));
             timeout = json.getInt("timeout");
+            poolSize = json.getInt("poolSize");
             validate(username, password, url, timeout);
             save();
             return super.configure(req, json);
@@ -176,7 +191,7 @@ public class ConfluenceSite extends AbstractDescribableImpl<ConfluenceSite> {
 
         private boolean isReachable(final URL url, final Integer timeout) {
             try (Socket socket = new Socket()) {
-                socket.connect(new InetSocketAddress(url.getHost(), 80), timeout * 1000);
+                socket.connect(new InetSocketAddress(url.getHost(), 80), timeout);
                 return true;
             } catch (IOException e) {
                 return false;
@@ -191,8 +206,12 @@ public class ConfluenceSite extends AbstractDescribableImpl<ConfluenceSite> {
             return password;
         }
 
-        public String getUrl() {
-            return url;
+        public URL getUrl() {
+            try {
+                return new URL(url);
+            } catch (MalformedURLException e) {
+                throw new RuntimeException("I was already validated", e);
+            }
         }
 
         public AuthenticationType getAuthenticationType() {
@@ -201,6 +220,10 @@ public class ConfluenceSite extends AbstractDescribableImpl<ConfluenceSite> {
 
         public Integer getTimeout() {
             return timeout;
+        }
+
+        public Integer getPoolSize() {
+            return poolSize;
         }
     }
 }

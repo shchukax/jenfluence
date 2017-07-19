@@ -1,12 +1,9 @@
 package de.sprengnetter.jenkins.plugins.jenfluence.step.execution;
 
-import de.sprengnetter.jenkins.plugins.jenfluence.api.Ancestor;
-import de.sprengnetter.jenkins.plugins.jenfluence.api.Body;
-import de.sprengnetter.jenkins.plugins.jenfluence.api.Space;
-import de.sprengnetter.jenkins.plugins.jenfluence.api.Storage;
-import de.sprengnetter.jenkins.plugins.jenfluence.client.ContentService;
-import de.sprengnetter.jenkins.plugins.jenfluence.response.Content;
-import de.sprengnetter.jenkins.plugins.jenfluence.response.Page;
+import de.sprengnetter.jenkins.plugins.jenfluence.ConfluenceSite;
+import de.sprengnetter.jenkins.plugins.jenfluence.api.*;
+import de.sprengnetter.jenkins.plugins.jenfluence.api.response.PageCreated;
+import de.sprengnetter.jenkins.plugins.jenfluence.service.ContentService;
 import de.sprengnetter.jenkins.plugins.jenfluence.step.AbstractStepExecution;
 import de.sprengnetter.jenkins.plugins.jenfluence.step.descriptor.CreatePage;
 import org.jenkinsci.plugins.workflow.steps.StepContext;
@@ -17,12 +14,12 @@ import java.util.Collections;
  * @author Oliver Breitenbach
  * @version 1.0.0
  */
-public class CreatePageExecution extends AbstractStepExecution<Content, CreatePage> {
+public class CreatePageExecution extends AbstractStepExecution<PageCreated, CreatePage> {
 
     private CreatePage createPage;
 
-    public CreatePageExecution(final CreatePage createPage, final StepContext context) {
-        super(createPage, context);
+    public CreatePageExecution(final CreatePage createPage, final StepContext context, final ConfluenceSite confluenceSite) {
+        super(createPage, context, confluenceSite);
         this.createPage = createPage;
     }
 
@@ -46,8 +43,13 @@ public class CreatePageExecution extends AbstractStepExecution<Content, CreatePa
     }
 
     @Override
-    protected Content run() throws Exception {
-        return getService(ContentService.class).createPage(toPage());
+    protected PageCreated run() throws Exception {
+        try {
+            return getService(ContentService.class).createPage(toPage());
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw e;
+        }
     }
 
     private Page toPage() {
@@ -58,10 +60,10 @@ public class CreatePageExecution extends AbstractStepExecution<Content, CreatePa
         Space space = new Space();
         space.setKey(createPage.getSpaceKey());
 
-        if (createPage.getParentId() != null && !createPage.getParentId().isEmpty()) {
+        if (createPage.getParentId() != null && createPage.getParentId() != 0) {
             Ancestor ancestor = new Ancestor();
             ancestor.setId(createPage.getParentId());
-            space.setAncestors(Collections.singletonList(ancestor));
+            page.setAncestors(Collections.singletonList(ancestor));
         }
 
         page.setSpace(space);
@@ -69,7 +71,7 @@ public class CreatePageExecution extends AbstractStepExecution<Content, CreatePa
         Body body = new Body();
         Storage storage = new Storage();
         storage.setValue(createPage.getContent());
-        storage.setRepresentation("representation");
+        storage.setRepresentation("storage");
         body.setStorage(storage);
 
         page.setBody(body);

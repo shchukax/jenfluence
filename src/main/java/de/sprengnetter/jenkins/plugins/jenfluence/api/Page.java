@@ -1,16 +1,17 @@
-package de.sprengnetter.jenkins.plugins.jenfluence.response;
+package de.sprengnetter.jenkins.plugins.jenfluence.api;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import de.sprengnetter.jenkins.plugins.jenfluence.api.Body;
-import de.sprengnetter.jenkins.plugins.jenfluence.api.Space;
+
+import java.io.Serializable;
+import java.util.List;
 
 /**
  * @author Oliver Breitenbach
  * @version 1.0.0
  */
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class Page {
+public class Page implements Serializable {
 
     @JsonProperty("type")
     private String type;
@@ -23,6 +24,9 @@ public class Page {
 
     @JsonProperty("body")
     private Body body;
+
+    @JsonProperty("ancestors")
+    private List<Ancestor> ancestors;
 
     public Body getBody() {
         return body;
@@ -54,5 +58,13 @@ public class Page {
 
     public void setSpace(Space space) {
         this.space = space;
+    }
+
+    public List<Ancestor> getAncestors() {
+        return ancestors;
+    }
+
+    public void setAncestors(List<Ancestor> ancestors) {
+        this.ancestors = ancestors;
     }
 }

@@ -1,10 +1,11 @@
 package de.sprengnetter.jenkins.plugins.jenfluence.api;
 
-import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -13,7 +14,7 @@ import java.util.Map;
  * @version 1.0.0
  */
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class Storage {
+public class Storage implements Serializable {
 
     @JsonProperty("value")
     private String value;
@@ -21,7 +22,8 @@ public class Storage {
     @JsonProperty("representation")
     private String representation;
 
-    private Map<String, Object> unknownFields = new HashMap<>();
+    @JsonIgnore
+    private Map<String, Object> unmappedFields = new HashMap<>();
 
     public String getValue() {
         return value;
@@ -39,13 +41,12 @@ public class Storage {
         this.representation = representation;
     }
 
-    @JsonAnyGetter
-    public Map<String, Object> getUnkownFields() {
-        return unknownFields;
+    public Map<String, Object> getUnmappedFields() {
+        return unmappedFields;
     }
 
     @JsonAnySetter
-    public void setUnkownFields(final String name, final Object o) {
-        unknownFields.put(name, o);
+    public void setUnmappedFields(String name, Object o) {
+        this.unmappedFields.put(name, o);
     }
 }
