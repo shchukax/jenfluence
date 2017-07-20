@@ -58,4 +58,14 @@ public class Links implements Serializable {
     public void setUnmappedFields(String name, Object o) {
         this.unmappedFields.put(name, o);
     }
+
+    @Override
+    public String toString() {
+        return "Links{" +
+                "webUi='" + webUi + '\'' +
+                ", tinyUi='" + tinyUi + '\'' +
+                ", self='" + self + '\'' +
+                ", unmappedFields=" + unmappedFields +
+                '}';
+    }
 }

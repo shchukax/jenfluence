@@ -38,4 +38,12 @@ public class Body implements Serializable {
     public void setUnmappedFields(final String name, final Object o) {
         unmappedFields.put(name, o);
     }
+
+    @Override
+    public String toString() {
+        return "Body{" +
+                "storage=" + storage +
+                ", unmappedFields=" + unmappedFields +
+                '}';
+    }
 }

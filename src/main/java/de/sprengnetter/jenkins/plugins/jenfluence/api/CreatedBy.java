@@ -59,4 +59,14 @@ public class CreatedBy {
     public void setUnmappedFields(String name, Object o) {
         this.unmappedFields.put(name, o);
     }
+
+    @Override
+    public String toString() {
+        return "CreatedBy{" +
+                "username='" + username + '\'' +
+                ", displayName='" + displayName + '\'' +
+                ", userKey='" + userKey + '\'' +
+                ", unmappedFields=" + unmappedFields +
+                '}';
+    }
 }

@@ -49,4 +49,13 @@ public class Storage implements Serializable {
     public void setUnmappedFields(String name, Object o) {
         this.unmappedFields.put(name, o);
     }
+
+    @Override
+    public String toString() {
+        return "Storage{" +
+                "value='" + value + '\'' +
+                ", representation='" + representation + '\'' +
+                ", unmappedFields=" + unmappedFields +
+                '}';
+    }
 }

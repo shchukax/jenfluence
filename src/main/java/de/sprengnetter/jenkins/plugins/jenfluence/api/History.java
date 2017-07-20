@@ -81,4 +81,16 @@ public class History {
     public void setUnmappedFields(String name, Object o) {
         this.unmappedFields = unmappedFields;
     }
+
+    @Override
+    public String toString() {
+        return "History{" +
+                "latest=" + latest +
+                ", createdBy=" + createdBy +
+                ", createdDate='" + createdDate + '\'' +
+                ", links=" + links +
+                ", expandable=" + expandable +
+                ", unmappedFields=" + unmappedFields +
+                '}';
+    }
 }

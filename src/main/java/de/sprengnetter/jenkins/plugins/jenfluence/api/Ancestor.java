@@ -38,4 +38,12 @@ public class Ancestor implements Serializable {
     public void setUnmappedFields(String name, Object o) {
         this.unmappedFields = unmappedFields;
     }
+
+    @Override
+    public String toString() {
+        return "Ancestor{" +
+                "id=" + id +
+                ", unmappedFields=" + unmappedFields +
+                '}';
+    }
 }

@@ -38,4 +38,12 @@ public class Space implements Serializable {
     public void setUnmappedFields(String name, Object o) {
         this.unmappedFields.put(name, o);
     }
+
+    @Override
+    public String toString() {
+        return "Space{" +
+                "key='" + key + '\'' +
+                ", unmappedFields=" + unmappedFields +
+                '}';
+    }
 }

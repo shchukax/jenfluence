@@ -92,4 +92,17 @@ public class Container {
     public void setUnmappedFields(String name, Object o) {
         this.unmappedFields.put(name, o);
     }
+
+    @Override
+    public String toString() {
+        return "Container{" +
+                "id=" + id +
+                ", key='" + key + '\'' +
+                ", name='" + name + '\'' +
+                ", type='" + type + '\'' +
+                ", links=" + links +
+                ", expandable=" + expandable +
+                ", unmappedFields=" + unmappedFields +
+                '}';
+    }
 }

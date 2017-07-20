@@ -81,4 +81,16 @@ public class Version {
     public void setUnmappedFields(String name, Object o) {
         this.unmappedFields = unmappedFields;
     }
+
+    @Override
+    public String toString() {
+        return "Version{" +
+                "by=" + by +
+                ", when='" + when + '\'' +
+                ", message='" + message + '\'' +
+                ", number=" + number +
+                ", minorEdit=" + minorEdit +
+                ", unmappedFields=" + unmappedFields +
+                '}';
+    }
 }

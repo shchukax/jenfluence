@@ -67,4 +67,15 @@ public class Page implements Serializable {
     public void setAncestors(List<Ancestor> ancestors) {
         this.ancestors = ancestors;
     }
+
+    @Override
+    public String toString() {
+        return "Page{" +
+                "type='" + type + '\'' +
+                ", title='" + title + '\'' +
+                ", space=" + space +
+                ", body=" + body +
+                ", ancestors=" + ancestors +
+                '}';
+    }
 }

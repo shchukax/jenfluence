@@ -35,7 +35,7 @@ public class Result implements Serializable {
     private Links links;
 
     @JsonProperty("_expandable")
-    private Map<String, String> expandables = new HashMap<>();
+    private Map<String, String> expandable = new HashMap<>();
 
     private Map<String, Object> unmappedFields = new HashMap<>();
 
@@ -87,12 +87,12 @@ public class Result implements Serializable {
         this.links = links;
     }
 
-    public Map<String, String> getExpandables() {
-        return expandables;
+    public Map<String, String> getExpandable() {
+        return expandable;
     }
 
-    public void setExpandables(Map<String, String> expandables) {
-        this.expandables = expandables;
+    public void setExpandable(Map<String, String> expandable) {
+        this.expandable = expandable;
     }
 
     @JsonAnyGetter
@@ -103,5 +103,19 @@ public class Result implements Serializable {
     @JsonAnySetter
     public void setUnmappedFields(final String name, final Object o) {
         unmappedFields.put(name, o);
+    }
+
+    @Override
+    public String toString() {
+        return "Result{" +
+                "id=" + id +
+                ", type='" + type + '\'' +
+                ", status='" + status + '\'' +
+                ", title='" + title + '\'' +
+                ", extensions=" + extensions +
+                ", links=" + links +
+                ", expandables=" + expandable +
+                ", unmappedFields=" + unmappedFields +
+                '}';
     }
 }

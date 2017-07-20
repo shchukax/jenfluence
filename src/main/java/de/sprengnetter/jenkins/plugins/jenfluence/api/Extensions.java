@@ -38,4 +38,12 @@ public class Extensions implements Serializable {
     public void setUnkownFields(final String name, final Object o) {
         unkownFields.put(name, o);
     }
+
+    @Override
+    public String toString() {
+        return "Extensions{" +
+                "position='" + position + '\'' +
+                ", unkownFields=" + unkownFields +
+                '}';
+    }
 }

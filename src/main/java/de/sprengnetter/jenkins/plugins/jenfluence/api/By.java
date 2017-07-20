@@ -70,4 +70,15 @@ public class By {
     public void setUnmappedFields(String name, Object o) {
         this.unmappedFields = unmappedFields;
     }
+
+    @Override
+    public String toString() {
+        return "By{" +
+                "type='" + type + '\'' +
+                ", username='" + username + '\'' +
+                ", displayName='" + displayName + '\'' +
+                ", userKey='" + userKey + '\'' +
+                ", unmappedFields=" + unmappedFields +
+                '}';
+    }
 }
