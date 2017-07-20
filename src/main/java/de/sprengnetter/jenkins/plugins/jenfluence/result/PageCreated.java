@@ -160,4 +160,23 @@ public class PageCreated {
     public void setContainer(Container container) {
         this.container = container;
     }
+
+    @Override
+    public String toString() {
+        return "PageCreated{" +
+                "id=" + id +
+                ", type='" + type + '\'' +
+                ", status='" + status + '\'' +
+                ", title='" + title + '\'' +
+                ", space=" + space +
+                ", links=" + links +
+                ", expandable=" + expandable +
+                ", history=" + history +
+                ", ancestors=" + ancestors +
+                ", version=" + version +
+                ", container=" + container +
+                ", createdDate='" + createdDate + '\'' +
+                ", unmappedFields=" + unmappedFields +
+                '}';
+    }
 }

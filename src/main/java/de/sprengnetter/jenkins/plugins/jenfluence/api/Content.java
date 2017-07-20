@@ -69,4 +69,15 @@ public class Content implements Serializable {
     public void setResults(List<Result> results) {
         this.results = results;
     }
+
+    @Override
+    public String toString() {
+        return "Content{" +
+                "start=" + start +
+                ", limit=" + limit +
+                ", size=" + size +
+                ", links=" + links +
+                ", results=" + results +
+                '}';
+    }
 }

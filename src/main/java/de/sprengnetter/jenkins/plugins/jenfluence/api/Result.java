@@ -37,7 +37,7 @@ public class Result implements Serializable {
     @JsonProperty("_expandable")
     private Map<String, String> expandables = new HashMap<>();
 
-    private Map<String, Object> unkownFields = new HashMap<>();
+    private Map<String, Object> unmappedFields = new HashMap<>();
 
     public Integer getId() {
         return id;
@@ -96,12 +96,12 @@ public class Result implements Serializable {
     }
 
     @JsonAnyGetter
-    public Map<String, Object> getUnkownFields() {
-        return unkownFields;
+    public Map<String, Object> getUnmappedFields() {
+        return unmappedFields;
     }
 
     @JsonAnySetter
-    public void setUnkownFields(final String name, final Object o) {
-        unkownFields.put(name, o);
+    public void setUnmappedFields(final String name, final Object o) {
+        unmappedFields.put(name, o);
     }
 }
