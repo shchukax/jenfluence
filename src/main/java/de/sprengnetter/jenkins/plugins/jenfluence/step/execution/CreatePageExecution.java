@@ -2,7 +2,6 @@ package de.sprengnetter.jenkins.plugins.jenfluence.step.execution;
 
 import de.sprengnetter.jenkins.plugins.jenfluence.ConfluenceSite;
 import de.sprengnetter.jenkins.plugins.jenfluence.api.*;
-import de.sprengnetter.jenkins.plugins.jenfluence.api.PageCreated;
 import de.sprengnetter.jenkins.plugins.jenfluence.service.ContentService;
 import de.sprengnetter.jenkins.plugins.jenfluence.step.AbstractStepExecution;
 import de.sprengnetter.jenkins.plugins.jenfluence.step.descriptor.CreatePage;
@@ -60,9 +59,9 @@ public class CreatePageExecution extends AbstractStepExecution<PageCreated, Crea
         Space space = new Space();
         space.setKey(createPage.getSpaceKey());
 
-        if (createPage.getParentId() != null && createPage.getParentId() != 0) {
+        if (createPage.getParentTitle() != null && !createPage.getParentTitle().isEmpty()) {
             Ancestor ancestor = new Ancestor();
-            ancestor.setId(createPage.getParentId());
+            ancestor.setId(getParentId());
             page.setAncestors(Collections.singletonList(ancestor));
         }
 
@@ -77,5 +76,21 @@ public class CreatePageExecution extends AbstractStepExecution<PageCreated, Crea
         page.setBody(body);
 
         return page;
+    }
+
+    private Integer getParentId() {
+        ContentService service = getService(ContentService.class);
+        Content content = service.getPage(createPage.getSpaceKey(), createPage.getParentTitle());
+
+        if (content.getResults().get(0).getId() == null || content.getResults().size() == 0) {
+            throw new IllegalStateException("No parent page with name " + createPage.getParentTitle() + " in space with key "
+                    + createPage.getSpaceKey() + " was found");
+        }
+
+        if (content.getResults().size() > 1) {
+            throw new IllegalStateException("Multiple possible parent pages with the name " + createPage.getParentTitle()
+                    + "in space with key " + createPage.getSpaceKey() + " were found");
+        }
+        return content.getResults().get(0).getId();
     }
 }

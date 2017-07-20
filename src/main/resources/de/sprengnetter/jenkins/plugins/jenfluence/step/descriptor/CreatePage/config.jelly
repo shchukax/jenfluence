@@ -17,7 +17,7 @@
         <f:textbox/>
     </f:entry>
 
-    <f:entry field="parentId" title="ID of parent page (only if this page is becoming a child page)">
+    <f:entry field="parentTitle" title="Title of parent page (only if this page is becoming a child page)">
         <f:textbox/>
     </f:entry>
 
