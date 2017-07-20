@@ -2,7 +2,7 @@ package de.sprengnetter.jenkins.plugins.jenfluence.step.execution;
 
 import de.sprengnetter.jenkins.plugins.jenfluence.ConfluenceSite;
 import de.sprengnetter.jenkins.plugins.jenfluence.api.*;
-import de.sprengnetter.jenkins.plugins.jenfluence.result.PageCreated;
+import de.sprengnetter.jenkins.plugins.jenfluence.api.PageCreated;
 import de.sprengnetter.jenkins.plugins.jenfluence.service.ContentService;
 import de.sprengnetter.jenkins.plugins.jenfluence.step.AbstractStepExecution;
 import de.sprengnetter.jenkins.plugins.jenfluence.step.descriptor.CreatePage;

@@ -1,10 +1,9 @@
-package de.sprengnetter.jenkins.plugins.jenfluence.result;
+package de.sprengnetter.jenkins.plugins.jenfluence.api;
 
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import de.sprengnetter.jenkins.plugins.jenfluence.api.*;
 
 import java.util.HashMap;
 import java.util.List;
