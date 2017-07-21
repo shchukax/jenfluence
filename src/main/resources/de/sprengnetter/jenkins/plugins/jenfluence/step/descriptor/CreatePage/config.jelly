@@ -2,27 +2,50 @@
 <?jelly escape-by-default='true'?>
 <j:jelly
         xmlns:j="jelly:core"
-        xmlns:st="jelly:stapler"
-        xmlns:d="jelly:define"
-        xmlns:l="/lib/layout"
-        xmlns:t="/lib/hudson"
         xmlns:f="/lib/form"
-        xmlns:i="jelly:fmt">
+>
 
-    <f:entry field="title" title="Page title">
+    <f:section title="General">
+        <f:entry field="title" title="Page title" description="The title of the created page">
+            <f:textbox/>
+        </f:entry>
+    </f:section>
+
+
+
+    <f:entry field="spaceKey" title="Space key" description="The key of the space in which the page will be created">
         <f:textbox/>
     </f:entry>
 
-    <f:entry field="spaceKey" title="Spacekey">
-        <f:textbox/>
-    </f:entry>
+    <f:section title="Parent page">
+        <f:radioBlock name="by" field="by" title="By page ID" value="ID" checked="${instance.isIdentifiedBy('ID')}"
+                     inline="false" >
+                <f:entry title="Page ID" field="parentIdentifier" description="The ID of the parent page">
+                    <f:textbox/>
+                </f:entry>
+        </f:radioBlock>
 
-    <f:entry field="parentTitle" title="Title of parent page (only if this page is becoming a child page)">
-        <f:textbox/>
-    </f:entry>
+        <f:radioBlock name="by" field="by" title="By page title" value="TITLE"
+                      checked="${instance.isIdentifiedBy('TITLE')}" inline="false">
+                <f:entry title="Page title" field="parentIdentifier" description="The title of the parent page">
+                    <f:textbox/>
+                </f:entry>
+        </f:radioBlock>
 
-    <f:entry field="content" title="Page content">
-        <f:textbox/>
-    </f:entry>
+        <f:radioBlock name="by" field="by" title="No parent page" value="NONE"
+                      checked="${instance.isIdentifiedBy('NONE')}" inline="false">
+        </f:radioBlock>
+    </f:section>
+
+
+    <f:section title="Content">
+        <f:block>
+            <p>Type the content of the page in the textbox below. It is also possible to pass HTML for formatting.</p>
+        </f:block>
+        <f:entry field="content" title="Page content" description="The content of the created page">
+            <f:textbox/>
+        </f:entry>
+    </f:section>
+
 
 </j:jelly>

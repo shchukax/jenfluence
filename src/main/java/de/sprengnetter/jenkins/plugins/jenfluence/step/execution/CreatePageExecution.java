@@ -59,12 +59,18 @@ public class CreatePageExecution extends AbstractStepExecution<PageCreated, Crea
         Space space = new Space();
         space.setKey(createPage.getSpaceKey());
 
-        if (createPage.getParentTitle() != null && !createPage.getParentTitle().isEmpty()) {
-            Ancestor ancestor = new Ancestor();
-            ancestor.setId(getParentId());
-            page.setAncestors(Collections.singletonList(ancestor));
+        Ancestor ancestor = new Ancestor();
+
+        switch (createPage.getBy().getValue().toLowerCase()) {
+            case "title":
+                ancestor.setId(getParentId());
+                break;
+            case "id":
+                ancestor.setId(Integer.parseInt(createPage.getBy().getParentIdentifier()));
+                break;
         }
 
+        page.setAncestors(Collections.singletonList(ancestor));
         page.setSpace(space);
 
         Body body = new Body();
@@ -74,21 +80,24 @@ public class CreatePageExecution extends AbstractStepExecution<PageCreated, Crea
         body.setStorage(storage);
 
         page.setBody(body);
-
         return page;
     }
 
     private Integer getParentId() {
         ContentService service = getService(ContentService.class);
-        Content content = service.getPage(createPage.getSpaceKey(), createPage.getParentTitle());
+        Content content = service.getPage(createPage.getSpaceKey(), createPage.getBy().getParentIdentifier());
 
         if (content.getResults().get(0).getId() == null || content.getResults().size() == 0) {
-            throw new IllegalStateException("No parent page with name " + createPage.getParentTitle() + " in space with key "
+            throw new IllegalStateException("No parent page with name " + createPage.getBy().getParentIdentifier() + " in space with key "
                     + createPage.getSpaceKey() + " was found");
         }
 
+        /* Should NEVER happen, because Confluence does not allow multiple pages with the same name in a space.
+           But you never know which bugs are present in Confluence or which new features are coming in future versions!
+           Better safe than sorry.
+         */
         if (content.getResults().size() > 1) {
-            throw new IllegalStateException("Multiple possible parent pages with the name " + createPage.getParentTitle()
+            throw new IllegalStateException("Multiple possible parent pages with the name " + createPage.getBy().getParentIdentifier()
                     + "in space with key " + createPage.getSpaceKey() + " were found");
         }
         return content.getResults().get(0).getId();

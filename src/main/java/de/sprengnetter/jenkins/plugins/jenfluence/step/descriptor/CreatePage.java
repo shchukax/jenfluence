@@ -2,6 +2,7 @@ package de.sprengnetter.jenkins.plugins.jenfluence.step.descriptor;
 
 import de.sprengnetter.jenkins.plugins.jenfluence.step.AbstractStep;
 import de.sprengnetter.jenkins.plugins.jenfluence.step.AbstractStepDesciptor;
+import de.sprengnetter.jenkins.plugins.jenfluence.step.By;
 import de.sprengnetter.jenkins.plugins.jenfluence.step.execution.CreatePageExecution;
 import hudson.Extension;
 import org.jenkinsci.plugins.workflow.steps.StepContext;
@@ -17,25 +18,26 @@ import javax.annotation.Nonnull;
 public class CreatePage extends AbstractStep {
 
     private String title;
-
     private String spaceKey;
-
-    private String parentTitle;
-
     private String content;
+    private By by;
 
     @DataBoundConstructor
-    public CreatePage(final String title, final String spaceKey, final String parentTitle, final String content) {
+    public CreatePage(final String title, final String spaceKey, final By by, final String content) {
         super();
         this.title = title;
         this.spaceKey = spaceKey;
-        this.parentTitle = parentTitle;
+        this.by = by;
         this.content = content;
     }
 
     @Override
     public StepExecution start(final StepContext context) throws Exception {
         return new CreatePageExecution(this, context, getSite());
+    }
+
+    public String isIdentifiedBy(final String identifiedBy) {
+        return this.by.getValue().equalsIgnoreCase(identifiedBy) ? "true" : "";
     }
 
     public String getTitle() {
@@ -46,12 +48,12 @@ public class CreatePage extends AbstractStep {
         return spaceKey;
     }
 
-    public String getParentTitle() {
-        return parentTitle;
-    }
-
     public String getContent() {
         return content;
+    }
+
+    public By getBy() {
+        return by;
     }
 
     @Extension
