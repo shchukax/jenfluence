@@ -9,12 +9,16 @@
         xmlns:f="/lib/form"
         xmlns:i="jelly:fmt">
 
-    <f:entry field="spaceKey" title="Space Key">
-        <f:textbox/>
-    </f:entry>
+    <f:section title="General">
 
-    <f:entry field="title" title="Page title">
-        <f:textbox/>
-    </f:entry>
+        <f:entry field="title" title="Page title" description="The title of the searched page">
+            <f:textbox/>
+         </f:entry>
+
+        <f:entry field="spaceKey" title="Space Key" description="The key of the space which contains the searched page">
+            <f:textbox/>
+        </f:entry>
+
+    </f:section>
 
 </j:jelly>
