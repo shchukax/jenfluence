@@ -12,11 +12,19 @@ import java.util.Collections;
 /**
  * @author Oliver Breitenbach
  * @version 1.0.0
+ * Execution implementation of the step "createPage".
  */
 public class CreatePageExecution extends AbstractStepExecution<PageCreated, CreatePage> {
 
     private CreatePage createPage;
 
+    /**
+     * Constructor that takes the needed information for the execution of the step.
+     *
+     * @param createPage     The step that is going to be executed.
+     * @param context        The step context.
+     * @param confluenceSite The configured site of Confluence.
+     */
     public CreatePageExecution(final CreatePage createPage, final StepContext context, final ConfluenceSite confluenceSite) {
         super(createPage, context, confluenceSite);
         this.createPage = createPage;

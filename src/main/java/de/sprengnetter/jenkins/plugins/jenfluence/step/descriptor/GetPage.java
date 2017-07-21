@@ -13,6 +13,7 @@ import javax.annotation.Nonnull;
 /**
  * @author Oliver Breitenbach
  * @version 1.0.0
+ * Respresentation of the step "getPage".
  */
 public class GetPage extends AbstractStep {
 
@@ -20,6 +21,12 @@ public class GetPage extends AbstractStep {
 
     private String title;
 
+    /**
+     * Constructor that takes the information about the searched page.
+     *
+     * @param spaceKey The key of the space where the searched page is located in.
+     * @param title    The title of the searched page.
+     */
     @DataBoundConstructor
     public GetPage(final String spaceKey, final String title) {
         this.spaceKey = spaceKey;
@@ -31,20 +38,22 @@ public class GetPage extends AbstractStep {
         return new GetPageExecution(this, context, getSite());
     }
 
+    /**
+     * Returns the key of the space where the searched page is located in.
+     *
+     * @return The key of the space.
+     */
     public String getSpaceKey() {
         return spaceKey;
     }
 
-    public void setSpaceKey(String spaceKey) {
-        this.spaceKey = spaceKey;
-    }
-
+    /**
+     * Returns the title of the searched page.
+     *
+     * @return The title of the searched page.
+     */
     public String getTitle() {
         return title;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
     }
 
     @Extension

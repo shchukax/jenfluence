@@ -9,11 +9,16 @@ import java.io.Serializable;
 /**
  * @author Oliver Breitenbach
  * @version 1.0.0
+ * Abstract base class for all the available steps within this plugin.
  */
 public abstract class AbstractStep extends Step implements Serializable {
 
     private ConfluenceSite site;
 
+    /**
+     * Constructor which extracts the information of the configured site (global Jenkins config) from it's descriptor
+     * and constructs an instance of {@link ConfluenceSite} which can be used by the steps.
+     */
     public AbstractStep() {
         ConfluenceSite.ConfluenceSiteDescriptor siteDescriptor = (ConfluenceSite.ConfluenceSiteDescriptor)
                 Jenkins.getInstance().getDescriptor(ConfluenceSite.class);
@@ -28,6 +33,11 @@ public abstract class AbstractStep extends Step implements Serializable {
         );
     }
 
+    /**
+     * Returns the configured {@link ConfluenceSite}.
+     *
+     * @return The configured {@link ConfluenceSite}.
+     */
     public ConfluenceSite getSite() {
         return site;
     }

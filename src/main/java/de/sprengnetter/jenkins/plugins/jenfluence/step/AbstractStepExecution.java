@@ -22,8 +22,11 @@ import java.net.URISyntaxException;
 import java.nio.charset.StandardCharsets;
 
 /**
+ * @param <R> The return type of the execution.
+ * @param <T> The type of the step which gets executed.
  * @author Oliver Breitenbach
  * @version 1.0.0
+ * Abstract base class for all classes that are meant to execute steps.
  */
 public abstract class AbstractStepExecution<R, T extends AbstractStep> extends SynchronousNonBlockingStepExecution<R> {
 
@@ -34,6 +37,13 @@ public abstract class AbstractStepExecution<R, T extends AbstractStep> extends S
 
     private transient ResteasyWebTarget target;
 
+    /**
+     * Constructor which takes the information to initialize the execution of the step.
+     *
+     * @param step           The step which gets executed.
+     * @param context        The context of the step.
+     * @param confluenceSite The configured site of Confluence (global Jenkins config).
+     */
     public AbstractStepExecution(final T step, final StepContext context, final ConfluenceSite confluenceSite) {
         super(context);
         try {
@@ -47,12 +57,31 @@ public abstract class AbstractStepExecution<R, T extends AbstractStep> extends S
         }
     }
 
+    /**
+     * Validates the step. Must be implemented by each step.
+     *
+     * @param step The step which gets validated.
+     */
     public abstract void validate(final T step);
 
+    /**
+     * Checks if the given step is null.
+     *
+     * @param step The step which gets checked.
+     * @return True if it is null, false if it is not.
+     */
     protected boolean isNull(final T step) {
         return step == null;
     }
 
+    /**
+     * Returns the desired instance of a service. E.g. an instance of {@link de.sprengnetter.jenkins.plugins.jenfluence.service.ContentService}
+     * to execute it's methods.
+     *
+     * @param clazz The class of the desired service.
+     * @param <S>   The type of the desired service.
+     * @return An instance of the desired service.
+     */
     protected <S extends BaseService> S getService(final Class<S> clazz) {
         return target.proxyBuilder(clazz).classloader(clazz.getClassLoader()).build();
     }

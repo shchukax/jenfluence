@@ -18,12 +18,23 @@ import java.security.NoSuchAlgorithmException;
 /**
  * @author Oliver Breitenbach
  * @version 1.0.0
+ * Utility class for related to used Apache HTTP client.
  */
 public final class HttpUtil {
 
+    /**
+     * Private constructor.
+     */
     private HttpUtil() {
     }
 
+    /**
+     * Initializes an HTTP client based on a {@link ConfluenceSite}.
+     *
+     * @param site The configured {@link ConfluenceSite} from the global Jenkins config.
+     * @return The configured HTTP client.
+     * @throws SSLException When something went wrong while applying the self singed strategy.
+     */
     public static CloseableHttpClient initClient(final ConfluenceSite site) throws SSLException {
         return HttpClientBuilder.create()
                 .setSSLSocketFactory(withSSL())
@@ -32,6 +43,12 @@ public final class HttpUtil {
                 .build();
     }
 
+    /**
+     * Constructs a {@link SSLConnectionSocketFactory} with a self signed strategy.
+     *
+     * @return The configured {@link SSLConnectionSocketFactory}
+     * @throws SSLException When something went wrong while applying the self singed strategy.
+     */
     public static SSLConnectionSocketFactory withSSL() throws SSLException {
         try {
             SSLContextBuilder contextBuilder = new SSLContextBuilder();
@@ -42,12 +59,24 @@ public final class HttpUtil {
         }
     }
 
+    /**
+     * Defines a {@link PoolingHttpClientConnectionManager} with a given pool size.
+     *
+     * @param poolSize The max pool size.
+     * @return The configured {@link PoolingHttpClientConnectionManager}.
+     */
     public static HttpClientConnectionManager withPoolingConnectionManager(final int poolSize) {
         PoolingHttpClientConnectionManager manager = new PoolingHttpClientConnectionManager();
         manager.setMaxTotal(poolSize);
         return manager;
     }
 
+    /**
+     * Configures a timeout on the connection.
+     *
+     * @param timeout The timeout in ms.
+     * @return The configured {@link RequestConfig}.
+     */
     public static RequestConfig withRequestConfig(final int timeout) {
         return RequestConfig.custom()
                 .setConnectionRequestTimeout(timeout)

@@ -10,11 +10,19 @@ import org.jenkinsci.plugins.workflow.steps.StepContext;
 /**
  * @author Oliver Breitenbach
  * @version 1.0.0
+ * Execution implementation of the step "getPage".
  */
 public class GetPageExecution extends AbstractStepExecution<Content, GetPage> {
 
     private GetPage getPageStep;
 
+    /**
+     * Constructor which takes the needed information to execute the step.
+     *
+     * @param getPage The step which gets executed.
+     * @param context The context of the step.
+     * @param site    The configured site of Confluence.
+     */
     public GetPageExecution(final GetPage getPage, final StepContext context, final ConfluenceSite site) {
         super(getPage, context, site);
         this.getPageStep = getPage;

@@ -38,6 +38,16 @@ public class ConfluenceSite extends AbstractDescribableImpl<ConfluenceSite> impl
 
     private ConfluenceSiteDescriptor confluenceSiteDescriptor = new ConfluenceSiteDescriptor();
 
+    /**
+     * Constructor that takes the values of this instance.
+     *
+     * @param username           The username of the confluence user.
+     * @param password           The password of the confluence user.
+     * @param url                The base URL of Confluence.
+     * @param authenticationType The desired type of authentication.
+     * @param timeout            The desired timeout for the connection.
+     * @param poolSize           The max connection pool size.
+     */
     @DataBoundConstructor
     public ConfluenceSite(final String username, final String password, final URL url, final AuthenticationType authenticationType, final Integer timeout, final Integer poolSize) {
         this.username = username;
@@ -53,60 +63,123 @@ public class ConfluenceSite extends AbstractDescribableImpl<ConfluenceSite> impl
         return confluenceSiteDescriptor;
     }
 
+    /**
+     * Returns the username of the Confluence user.
+     *
+     * @return The username.
+     */
     public String getUserName() {
         return username;
     }
 
+    /**
+     * Sets the username of the Confluence user.
+     *
+     * @param userName The value for username.
+     */
     @DataBoundSetter
     public void setUserName(final String userName) {
         this.username = userName;
     }
 
+    /**
+     * Return the base URL of Confluence.
+     *
+     * @return The base URL of Confluence.
+     */
     public URL getUrl() {
         return url;
     }
 
+    /**
+     * Sets the base URL of Confluence.
+     *
+     * @param url The base URL of Confluence.
+     */
     @DataBoundSetter
     public void setUrl(final URL url) {
         this.url = url;
     }
 
+    /**
+     * Returns the password of the Confluence user.
+     *
+     * @return The password of the Confluence user.
+     */
     public String getPassword() {
         return password;
     }
 
+    /**
+     * Sets the password of the Confluence user.
+     *
+     * @param password The password of the Confluence user.
+     */
     @DataBoundSetter
     public void setPassword(final String password) {
         this.password = password;
     }
 
+    /**
+     * Returns the type of authentication.
+     *
+     * @return The type of authentication.
+     */
     public AuthenticationType getAuthenticationType() {
         return authenticationType;
     }
 
+    /**
+     * Sets the type of authentication.
+     *
+     * @param authenticationType The type of authentication.
+     */
     @DataBoundSetter
     public void setAuthenticationType(final AuthenticationType authenticationType) {
         this.authenticationType = authenticationType;
     }
 
+    /**
+     * Returns the timeout for the connections.
+     *
+     * @return The timeout for the connections.
+     */
     public Integer getTimeout() {
         return timeout;
     }
 
+    /**
+     * Sets the timeout for the connections.
+     *
+     * @param timeout The timeout for the connections.
+     */
     @DataBoundSetter
     public void setTimeout(final Integer timeout) {
         this.timeout = timeout;
     }
 
+    /**
+     * Returns the max pool size for the connection pool.
+     *
+     * @return The max pool size.
+     */
     public Integer getPoolSize() {
         return poolSize;
     }
 
+    /**
+     * Sets the max pool size for the connection pool.
+     *
+     * @param poolSize The max pool size for the connection pool.
+     */
     @DataBoundSetter
     public void setPoolSize(Integer poolSize) {
         this.poolSize = poolSize;
     }
 
+    /**
+     * Descriptor for {@link ConfluenceSite}.
+     */
     @Extension
     public static final class ConfluenceSiteDescriptor extends Descriptor<ConfluenceSite> implements Serializable {
 
@@ -117,6 +190,9 @@ public class ConfluenceSite extends AbstractDescribableImpl<ConfluenceSite> impl
         private Integer timeout;
         private Integer poolSize;
 
+        /**
+         * Constructor that initializes the view.
+         */
         public ConfluenceSiteDescriptor() {
             super(ConfluenceSite.class);
             load();
@@ -141,6 +217,15 @@ public class ConfluenceSite extends AbstractDescribableImpl<ConfluenceSite> impl
             return super.configure(req, json);
         }
 
+        /**
+         * Tests the connection with the data from the view.
+         *
+         * @param username The username of the Confluence user.
+         * @param password The password of the Confluence user.
+         * @param url      The base URL of Confluence.l
+         * @param timeout  The timeout for the connections.
+         * @return FormValidation to show a success or an error on the view.
+         */
         public FormValidation doTestConnection(@QueryParameter("username") final String username,
                                                @QueryParameter("password") final String password,
                                                @QueryParameter("url") final String url,
