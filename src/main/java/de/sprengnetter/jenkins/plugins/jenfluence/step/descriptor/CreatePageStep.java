@@ -16,7 +16,7 @@ import javax.annotation.Nonnull;
  * @version 1.0.0
  * Descriptor and definition of the step "createPage" which allows the user tpo create a page.
  */
-public class CreatePage extends AbstractStep {
+public class CreatePageStep extends AbstractStep {
 
     private String title;
     private String spaceKey;
@@ -32,7 +32,7 @@ public class CreatePage extends AbstractStep {
      * @param content  The content of the page (can be in HTML format).
      */
     @DataBoundConstructor
-    public CreatePage(final String title, final String spaceKey, final By by, final String content) {
+    public CreatePageStep(final String title, final String spaceKey, final By by, final String content) {
         super();
         this.title = title;
         this.spaceKey = spaceKey;

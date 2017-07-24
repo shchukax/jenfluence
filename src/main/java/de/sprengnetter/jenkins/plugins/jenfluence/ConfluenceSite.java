@@ -211,6 +211,9 @@ public class ConfluenceSite extends AbstractDescribableImpl<ConfluenceSite> impl
             password = json.getString("password");
             url = json.getString("url");
             authenticationType = AuthenticationType.fromString(json.getString("authenticationType"));
+            if (authenticationType.equals(AuthenticationType.OAUTH)) {
+                throw new UnsupportedOperationException("OAuth is not a supported authentication method, yet");
+            }
             timeout = json.getInt("timeout");
             poolSize = json.getInt("poolSize");
             validate(username, password, url, timeout);

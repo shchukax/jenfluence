@@ -15,7 +15,7 @@ import javax.annotation.Nonnull;
  * @version 1.0.0
  * Respresentation of the step "getPage".
  */
-public class GetPage extends AbstractStep {
+public class GetPageStep extends AbstractStep {
 
     private String spaceKey;
 
@@ -28,7 +28,7 @@ public class GetPage extends AbstractStep {
      * @param title    The title of the searched page.
      */
     @DataBoundConstructor
-    public GetPage(final String spaceKey, final String title) {
+    public GetPageStep(final String spaceKey, final String title) {
         this.spaceKey = spaceKey;
         this.title = title;
     }

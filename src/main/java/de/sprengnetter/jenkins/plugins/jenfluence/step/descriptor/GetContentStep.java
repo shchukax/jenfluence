@@ -15,14 +15,14 @@ import javax.annotation.Nonnull;
  * @version 1.0.0
  * Representation of the getContent step.
  */
-public class GetContent extends AbstractStep {
+public class GetContentStep extends AbstractStep {
 
     private final String spaceKey;
 
     private final Integer limit;
 
     @DataBoundConstructor
-    public GetContent(final String spaceKey, final Integer limit) {
+    public GetContentStep(final String spaceKey, final Integer limit) {
         this.spaceKey = spaceKey;
         this.limit = limit;
     }

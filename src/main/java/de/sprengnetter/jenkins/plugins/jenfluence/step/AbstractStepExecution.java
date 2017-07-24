@@ -2,7 +2,6 @@ package de.sprengnetter.jenkins.plugins.jenfluence.step;
 
 import de.sprengnetter.jenkins.plugins.jenfluence.ConfluenceSite;
 import de.sprengnetter.jenkins.plugins.jenfluence.service.BaseService;
-import de.sprengnetter.jenkins.plugins.jenfluence.util.LoggingOutputStream;
 import org.apache.commons.io.IOUtils;
 import org.jboss.resteasy.client.jaxrs.BasicAuthentication;
 import org.jboss.resteasy.client.jaxrs.ResteasyClient;
@@ -17,7 +16,6 @@ import org.slf4j.LoggerFactory;
 import javax.ws.rs.client.ClientRequestFilter;
 import javax.ws.rs.client.ClientResponseFilter;
 import javax.ws.rs.core.MultivaluedMap;
-import javax.ws.rs.ext.WriterInterceptor;
 import java.net.URISyntaxException;
 import java.nio.charset.StandardCharsets;
 
@@ -96,13 +94,6 @@ public abstract class AbstractStepExecution<R, T extends AbstractStep> extends S
                     headers.add("X-Atlassian-Token", "no-check");
                 })
                 .register((ClientRequestFilter) requestContext -> System.out.println("Headers: " + requestContext.getHeaders()))
-                .register((WriterInterceptor) requestContext -> {
-                    LoggingOutputStream loggingOutputStream = new LoggingOutputStream(requestContext.getOutputStream());
-                    requestContext.setOutputStream(loggingOutputStream);
-                    requestContext.proceed();
-                    LOGGER.debug("Body:");
-                    LOGGER.debug(loggingOutputStream.getStringBuilder(StandardCharsets.UTF_8).toString());
-                })
                 .register((ClientResponseFilter) (requestContext, responseContext) -> {
                     if (responseContext.getStatus() != 200) {
                         LOGGER.error("Response message:");

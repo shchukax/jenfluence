@@ -4,7 +4,7 @@ import de.sprengnetter.jenkins.plugins.jenfluence.ConfluenceSite;
 import de.sprengnetter.jenkins.plugins.jenfluence.api.*;
 import de.sprengnetter.jenkins.plugins.jenfluence.service.ContentService;
 import de.sprengnetter.jenkins.plugins.jenfluence.step.AbstractStepExecution;
-import de.sprengnetter.jenkins.plugins.jenfluence.step.descriptor.CreatePage;
+import de.sprengnetter.jenkins.plugins.jenfluence.step.descriptor.CreatePageStep;
 import org.jenkinsci.plugins.workflow.steps.StepContext;
 
 import java.util.Collections;
@@ -14,23 +14,23 @@ import java.util.Collections;
  * @version 1.0.0
  * Execution implementation of the step "createPage".
  */
-public class CreatePageExecution extends AbstractStepExecution<PageCreated, CreatePage> {
+public class CreatePageExecution extends AbstractStepExecution<PageCreated, CreatePageStep> {
 
     /**
      * Constructor that takes the needed information for the execution of the step.
      *
-     * @param createPage     The step that is going to be executed.
+     * @param createPageStep     The step that is going to be executed.
      * @param context        The step context.
      * @param confluenceSite The configured site of Confluence.
      */
-    public CreatePageExecution(final CreatePage createPage, final StepContext context, final ConfluenceSite confluenceSite) {
-        super(createPage, context, confluenceSite);
+    public CreatePageExecution(final CreatePageStep createPageStep, final StepContext context, final ConfluenceSite confluenceSite) {
+        super(createPageStep, context, confluenceSite);
     }
 
     @Override
-    public void validate(final CreatePage step) {
+    public void validate(final CreatePageStep step) {
         if (isNull(step)) {
-            throw new IllegalStateException("Given step of type CreatePage is null");
+            throw new IllegalStateException("Given step of type CreatePageStep is null");
         }
 
         if (step.getSite() == null) {

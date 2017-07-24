@@ -4,7 +4,7 @@ import de.sprengnetter.jenkins.plugins.jenfluence.ConfluenceSite;
 import de.sprengnetter.jenkins.plugins.jenfluence.api.Content;
 import de.sprengnetter.jenkins.plugins.jenfluence.service.ContentService;
 import de.sprengnetter.jenkins.plugins.jenfluence.step.AbstractStepExecution;
-import de.sprengnetter.jenkins.plugins.jenfluence.step.descriptor.GetContent;
+import de.sprengnetter.jenkins.plugins.jenfluence.step.descriptor.GetContentStep;
 import org.jenkinsci.plugins.workflow.steps.StepContext;
 
 /**
@@ -12,23 +12,23 @@ import org.jenkinsci.plugins.workflow.steps.StepContext;
  * @version 1.0.0
  * Execution for the step getContent.
  */
-public class GetContentExecution extends AbstractStepExecution<Content, GetContent> {
+public class GetContentExecution extends AbstractStepExecution<Content, GetContentStep> {
 
     /**
      * Constructor that takes the step, the context of the step and the configured site for Confluence.
      *
-     * @param getContentStep The step which gets executed.
+     * @param getContentStepStep The step which gets executed.
      * @param context        The context of the step.
      * @param site           The congifured site of Confluence (Jenkins global config).
      */
-    public GetContentExecution(final GetContent getContentStep, final StepContext context, final ConfluenceSite site) {
-        super(getContentStep, context, site);
+    public GetContentExecution(final GetContentStep getContentStepStep, final StepContext context, final ConfluenceSite site) {
+        super(getContentStepStep, context, site);
     }
 
     @Override
-    public void validate(final GetContent step) {
+    public void validate(final GetContentStep step) {
         if (isNull(step)) {
-            throw new IllegalStateException("Given step of type \"GetContent\" is null");
+            throw new IllegalStateException("Given step of type \"GetContentStep\" is null");
         }
     }
 
