@@ -1,6 +1,7 @@
 package de.sprengnetter.jenkins.plugins.jenfluence.util;
 
 import de.sprengnetter.jenkins.plugins.jenfluence.ConfluenceSite;
+import org.apache.commons.validator.routines.UrlValidator;
 import org.apache.http.client.config.RequestConfig;
 import org.apache.http.conn.HttpClientConnectionManager;
 import org.apache.http.conn.ssl.SSLConnectionSocketFactory;
@@ -11,6 +12,10 @@ import org.apache.http.impl.conn.PoolingHttpClientConnectionManager;
 import org.apache.http.ssl.SSLContextBuilder;
 
 import javax.net.ssl.SSLException;
+import java.io.IOException;
+import java.net.InetSocketAddress;
+import java.net.Socket;
+import java.net.URL;
 import java.security.KeyManagementException;
 import java.security.KeyStoreException;
 import java.security.NoSuchAlgorithmException;
@@ -83,6 +88,26 @@ public final class HttpUtil {
                 .setConnectTimeout(timeout)
                 .setSocketTimeout(timeout)
                 .build();
+    }
+
+    public static void validateUrl(final String url) {
+        if (url == null || url.isEmpty()) {
+            throw new IllegalArgumentException("Given URL is null or empty");
+        }
+        String[] supportedProtocols = new String[]{"http", "https"};
+        UrlValidator urlValidator = new UrlValidator(supportedProtocols);
+        if (!urlValidator.isValid(url)) {
+            throw new IllegalArgumentException("URL " + url + " is invalid. Maybe you forgot the protocol (http/s)?");
+        }
+    }
+
+    public static boolean isReachable(final URL url, final Integer timeout) {
+        try (Socket socket = new Socket()) {
+            socket.connect(new InetSocketAddress(url.getHost(), 80), timeout);
+            return true;
+        } catch (IOException e) {
+            return false;
+        }
     }
 
 }

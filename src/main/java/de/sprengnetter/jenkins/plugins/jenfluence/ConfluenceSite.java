@@ -1,20 +1,21 @@
 package de.sprengnetter.jenkins.plugins.jenfluence;
 
+import de.sprengnetter.jenkins.plugins.jenfluence.util.HttpUtil;
 import hudson.Extension;
 import hudson.model.AbstractDescribableImpl;
 import hudson.model.Descriptor;
 import hudson.util.FormValidation;
 import net.sf.json.JSONObject;
-import org.apache.commons.validator.routines.UrlValidator;
 import org.kohsuke.stapler.DataBoundConstructor;
 import org.kohsuke.stapler.DataBoundSetter;
 import org.kohsuke.stapler.QueryParameter;
 import org.kohsuke.stapler.StaplerRequest;
 
 import javax.annotation.Nonnull;
-import java.io.IOException;
 import java.io.Serializable;
-import java.net.*;
+import java.net.MalformedURLException;
+import java.net.URISyntaxException;
+import java.net.URL;
 
 /**
  * Representation of a configured site for confluence.
@@ -233,7 +234,7 @@ public class ConfluenceSite extends AbstractDescribableImpl<ConfluenceSite> impl
             try {
                 validate(username, password, url, timeout);
                 URL confluenceUrl = new URL(url);
-                if (!isReachable(confluenceUrl, timeout)) {
+                if (!HttpUtil.isReachable(confluenceUrl, timeout)) {
                     throw new IllegalStateException("Address " + confluenceUrl.toURI().toString() + " is not reachable");
                 }
                 return FormValidation.okWithMarkup("Success");
@@ -250,7 +251,7 @@ public class ConfluenceSite extends AbstractDescribableImpl<ConfluenceSite> impl
 
         private void validate(final String username, final String password, final String url, final Integer timeout) {
             validateCredentials(username, password);
-            validateUrl(url);
+            HttpUtil.validateUrl(url);
         }
 
         private void validateCredentials(final String username, final String password) {
@@ -263,50 +264,61 @@ public class ConfluenceSite extends AbstractDescribableImpl<ConfluenceSite> impl
             }
         }
 
-        private void validateUrl(final String url) {
-            if (url == null || url.isEmpty()) {
-                throw new IllegalArgumentException("Given URL is null or empty");
-            }
-            String[] supportedProtocols = new String[]{"http", "https"};
-            UrlValidator urlValidator = new UrlValidator(supportedProtocols);
-            if (!urlValidator.isValid(url)) {
-                throw new IllegalArgumentException("URL " + url + " is invalid. Maybe you forgot the protocol (http/s)?");
-            }
-        }
 
-        private boolean isReachable(final URL url, final Integer timeout) {
-            try (Socket socket = new Socket()) {
-                socket.connect(new InetSocketAddress(url.getHost(), 80), timeout);
-                return true;
-            } catch (IOException e) {
-                return false;
-            }
-        }
-
+        /**
+         * Returns the configured username of the Confluence user.
+         *
+         * @return The configured username of the Confluence user.
+         */
         public String getUsername() {
             return username;
         }
 
+        /**
+         * Returns the configured password of the Confluence user.
+         *
+         * @return The configured password of the Confluence user.
+         */
         public String getPassword() {
             return password;
         }
 
+        /**
+         * Returns the configured URL of Confluence.
+         *
+         * @return The configured URL of Confluence.
+         */
         public URL getUrl() {
             try {
                 return new URL(url);
             } catch (MalformedURLException e) {
-                throw new RuntimeException("I was already validated", e);
+                throw new RuntimeException("I am already validated", e);
             }
         }
 
+        /**
+         * Returns the type of authentication.
+         *
+         * @return The type of authentication.
+         */
         public AuthenticationType getAuthenticationType() {
             return authenticationType;
         }
 
+        /**
+         * Returns the configured timeout for connections.
+         *
+         * @return The configured timeout.
+         */
         public Integer getTimeout() {
             return timeout;
         }
 
+        /**
+         * Returns the configured max size of the connection pool.
+         *
+         * @return The configured max size of the connection pool.
+         */
         public Integer getPoolSize() {
             return poolSize;
         }
