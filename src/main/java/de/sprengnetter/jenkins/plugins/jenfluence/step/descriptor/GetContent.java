@@ -13,6 +13,7 @@ import javax.annotation.Nonnull;
 /**
  * @author Oliver Breitenbach
  * @version 1.0.0
+ * Representation of the getContent step.
  */
 public class GetContent extends AbstractStep {
 
@@ -31,10 +32,19 @@ public class GetContent extends AbstractStep {
         return new GetContentExecution(this, context, getSite());
     }
 
+    /**
+     * Returns the space key.
+     *
+     * @return The space key.
+     */
     public String getSpaceKey() {
         return spaceKey;
     }
 
+    /**
+     * Returns the limit.
+     * @return The limit.
+     */
     public Integer getLimit() {
         return limit;
     }

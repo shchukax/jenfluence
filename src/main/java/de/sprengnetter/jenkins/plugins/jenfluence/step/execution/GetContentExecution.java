@@ -10,9 +10,17 @@ import org.jenkinsci.plugins.workflow.steps.StepContext;
 /**
  * @author Oliver Breitenbach
  * @version 1.0.0
+ * Execution for the step getContent.
  */
 public class GetContentExecution extends AbstractStepExecution<Content, GetContent> {
 
+    /**
+     * Constructor that takes the step, the context of the step and the configured site for Confluence.
+     *
+     * @param getContentStep The step which gets executed.
+     * @param context        The context of the step.
+     * @param site           The congifured site of Confluence (Jenkins global config).
+     */
     public GetContentExecution(final GetContent getContentStep, final StepContext context, final ConfluenceSite site) {
         super(getContentStep, context, site);
     }
@@ -27,7 +35,7 @@ public class GetContentExecution extends AbstractStepExecution<Content, GetConte
     @Override
     protected Content run() throws Exception {
         ContentService service = getService(ContentService.class);
-            //Do we have no input?
+        //Do we have no input?
         if ((getStep().getSpaceKey() == null || getStep().getSpaceKey().isEmpty())
                 && getStep().getLimit() == null) {
             return service.getContent();
