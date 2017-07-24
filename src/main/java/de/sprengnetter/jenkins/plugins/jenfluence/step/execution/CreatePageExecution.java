@@ -16,8 +16,6 @@ import java.util.Collections;
  */
 public class CreatePageExecution extends AbstractStepExecution<PageCreated, CreatePage> {
 
-    private CreatePage createPage;
-
     /**
      * Constructor that takes the needed information for the execution of the step.
      *
@@ -27,7 +25,6 @@ public class CreatePageExecution extends AbstractStepExecution<PageCreated, Crea
      */
     public CreatePageExecution(final CreatePage createPage, final StepContext context, final ConfluenceSite confluenceSite) {
         super(createPage, context, confluenceSite);
-        this.createPage = createPage;
     }
 
     @Override
@@ -61,20 +58,20 @@ public class CreatePageExecution extends AbstractStepExecution<PageCreated, Crea
 
     private Page toPage() {
         Page page = new Page();
-        page.setTitle(createPage.getTitle());
+        page.setTitle(getStep().getTitle());
         page.setType("page");
 
         Space space = new Space();
-        space.setKey(createPage.getSpaceKey());
+        space.setKey(getStep().getSpaceKey());
 
         Ancestor ancestor = new Ancestor();
 
-        switch (createPage.getBy().getValue().toLowerCase()) {
+        switch (getStep().getBy().getValue().toLowerCase()) {
             case "title":
                 ancestor.setId(getParentId());
                 break;
             case "id":
-                ancestor.setId(Integer.parseInt(createPage.getBy().getParentIdentifier()));
+                ancestor.setId(Integer.parseInt(getStep().getBy().getParentIdentifier()));
                 break;
         }
 
@@ -83,7 +80,7 @@ public class CreatePageExecution extends AbstractStepExecution<PageCreated, Crea
 
         Body body = new Body();
         Storage storage = new Storage();
-        storage.setValue(createPage.getContent());
+        storage.setValue(getStep().getContent());
         storage.setRepresentation("storage");
         body.setStorage(storage);
 
@@ -93,11 +90,11 @@ public class CreatePageExecution extends AbstractStepExecution<PageCreated, Crea
 
     private Integer getParentId() {
         ContentService service = getService(ContentService.class);
-        Content content = service.getPage(createPage.getSpaceKey(), createPage.getBy().getParentIdentifier());
+        Content content = service.getPage(getStep().getSpaceKey(), getStep().getBy().getParentIdentifier());
 
         if (content.getResults().get(0).getId() == null || content.getResults().size() == 0) {
-            throw new IllegalStateException("No parent page with name " + createPage.getBy().getParentIdentifier() + " in space with key "
-                    + createPage.getSpaceKey() + " was found");
+            throw new IllegalStateException("No parent page with name " + getStep().getBy().getParentIdentifier() + " in space with key "
+                    + getStep().getSpaceKey() + " was found");
         }
 
         /* Should NEVER happen, because Confluence does not allow multiple pages with the same name in a space.
@@ -105,8 +102,8 @@ public class CreatePageExecution extends AbstractStepExecution<PageCreated, Crea
            Better safe than sorry.
          */
         if (content.getResults().size() > 1) {
-            throw new IllegalStateException("Multiple possible parent pages with the name " + createPage.getBy().getParentIdentifier()
-                    + "in space with key " + createPage.getSpaceKey() + " were found");
+            throw new IllegalStateException("Multiple possible parent pages with the name " + getStep().getBy().getParentIdentifier()
+                    + "in space with key " + getStep().getSpaceKey() + " were found");
         }
         return content.getResults().get(0).getId();
     }

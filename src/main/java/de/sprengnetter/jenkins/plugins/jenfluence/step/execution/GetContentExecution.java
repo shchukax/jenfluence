@@ -13,11 +13,8 @@ import org.jenkinsci.plugins.workflow.steps.StepContext;
  */
 public class GetContentExecution extends AbstractStepExecution<Content, GetContent> {
 
-    private GetContent getContentStep;
-
     public GetContentExecution(final GetContent getContentStep, final StepContext context, final ConfluenceSite site) {
         super(getContentStep, context, site);
-        this.getContentStep = getContentStep;
     }
 
     @Override
@@ -31,20 +28,20 @@ public class GetContentExecution extends AbstractStepExecution<Content, GetConte
     protected Content run() throws Exception {
         ContentService service = getService(ContentService.class);
             //Do we have no input?
-        if ((getContentStep.getSpaceKey() == null || getContentStep.getSpaceKey().isEmpty())
-                && getContentStep.getLimit() == null) {
+        if ((getStep().getSpaceKey() == null || getStep().getSpaceKey().isEmpty())
+                && getStep().getLimit() == null) {
             return service.getContent();
             //Do we have a limit?
-        } else if ((getContentStep.getSpaceKey() == null || getContentStep.getSpaceKey().isEmpty())
-                && (getContentStep.getLimit() != null)) {
-            return service.getContent(getContentStep.getLimit());
+        } else if ((getStep().getSpaceKey() == null || getStep().getSpaceKey().isEmpty())
+                && (getStep().getLimit() != null)) {
+            return service.getContent(getStep().getLimit());
             //Do we have a space key?
-        } else if ((getContentStep.getLimit() == null)
-                && (getContentStep.getSpaceKey() != null && !getContentStep.getSpaceKey().isEmpty())) {
-            return service.getContent(getContentStep.getSpaceKey());
+        } else if ((getStep().getLimit() == null)
+                && (getStep().getSpaceKey() != null && !getStep().getSpaceKey().isEmpty())) {
+            return service.getContent(getStep().getSpaceKey());
             //Do we have a space key AND a limit?
         } else {
-            return service.getContent(getContentStep.getSpaceKey(), getContentStep.getLimit());
+            return service.getContent(getStep().getSpaceKey(), getStep().getLimit());
         }
     }
 

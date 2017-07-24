@@ -34,7 +34,7 @@ public abstract class AbstractStepExecution<R, T extends AbstractStep> extends S
 
     private static transient ResteasyClient client;
     private static transient boolean clientInitialized = false;
-
+    private final transient T step;
     private transient ResteasyWebTarget target;
 
     /**
@@ -46,6 +46,7 @@ public abstract class AbstractStepExecution<R, T extends AbstractStep> extends S
      */
     public AbstractStepExecution(final T step, final StepContext context, final ConfluenceSite confluenceSite) {
         super(context);
+        this.step = step;
         try {
             validate(step);
             if (!clientInitialized) {
@@ -110,5 +111,14 @@ public abstract class AbstractStepExecution<R, T extends AbstractStep> extends S
                 }).build();
 
         clientInitialized = true;
+    }
+
+    /**
+     * Returns the step which gets executed.
+     *
+     * @return The step.
+     */
+    public T getStep() {
+        return step;
     }
 }

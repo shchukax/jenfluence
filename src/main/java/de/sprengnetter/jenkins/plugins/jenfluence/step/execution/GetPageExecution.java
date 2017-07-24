@@ -14,8 +14,6 @@ import org.jenkinsci.plugins.workflow.steps.StepContext;
  */
 public class GetPageExecution extends AbstractStepExecution<Content, GetPage> {
 
-    private GetPage getPageStep;
-
     /**
      * Constructor which takes the needed information to execute the step.
      *
@@ -25,7 +23,6 @@ public class GetPageExecution extends AbstractStepExecution<Content, GetPage> {
      */
     public GetPageExecution(final GetPage getPage, final StepContext context, final ConfluenceSite site) {
         super(getPage, context, site);
-        this.getPageStep = getPage;
     }
 
     @Override
@@ -48,7 +45,7 @@ public class GetPageExecution extends AbstractStepExecution<Content, GetPage> {
     @Override
     protected Content run() throws Exception {
         try {
-            return getService(ContentService.class).getPage(getPageStep.getSpaceKey(), getPageStep.getTitle());
+            return getService(ContentService.class).getPage(getStep().getSpaceKey(), getStep().getTitle());
         } catch (Exception e) {
             e.printStackTrace();
             throw e;

@@ -90,6 +90,11 @@ public final class HttpUtil {
                 .build();
     }
 
+    /**
+     * Validates a given URL.
+     *
+     * @param url The URL to validate.
+     */
     public static void validateUrl(final String url) {
         if (url == null || url.isEmpty()) {
             throw new IllegalArgumentException("Given URL is null or empty");
@@ -101,6 +106,13 @@ public final class HttpUtil {
         }
     }
 
+    /**
+     * Checks if a given URL is reachable is within a given timeout.
+     *
+     * @param url     The URL which gets checkd.l
+     * @param timeout The timeout.
+     * @return True if the URL is reachable, false if not.
+     */
     public static boolean isReachable(final URL url, final Integer timeout) {
         try (Socket socket = new Socket()) {
             socket.connect(new InetSocketAddress(url.getHost(), 80), timeout);
