@@ -1,12 +1,11 @@
 package de.sprengnetter.jenkins.plugins.jenfluence.api;
 
+import java.util.HashMap;
+import java.util.Map;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
-
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * @author Oliver Breitenbach
@@ -67,18 +66,18 @@ public class By {
     }
 
     @JsonAnySetter
-    public void setUnmappedFields(String name, Object o) {
-        this.unmappedFields = unmappedFields;
+    public void setUnmappedFields(String name, Object value) {
+        this.unmappedFields.put(name, value);
     }
 
     @Override
     public String toString() {
         return "By{" +
-                "type='" + type + '\'' +
-                ", username='" + username + '\'' +
-                ", displayName='" + displayName + '\'' +
-                ", userKey='" + userKey + '\'' +
-                ", unmappedFields=" + unmappedFields +
-                '}';
+            "type='" + type + '\'' +
+            ", username='" + username + '\'' +
+            ", displayName='" + displayName + '\'' +
+            ", userKey='" + userKey + '\'' +
+            ", unmappedFields=" + unmappedFields +
+            '}';
     }
 }

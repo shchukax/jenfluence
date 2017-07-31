@@ -36,8 +36,8 @@ public class Ancestor implements Serializable {
     }
 
     @JsonAnySetter
-    public void setUnmappedFields(String name, Object o) {
-        this.unmappedFields = unmappedFields;
+    public void setUnmappedFields(String name, Object value) {
+        this.unmappedFields.put(name, value);
     }
 
     @Override
