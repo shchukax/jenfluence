@@ -15,6 +15,12 @@
     <packaging>hpi</packaging>
     <name>Jenfluence - Confluence steps plugin for Jenkins-Pipeline platform</name>
     <inceptionYear>2017</inceptionYear>
+    <licenses>
+    	<license>
+    		<name>Creative Commons Attribution-ShareAlike 4.0 International Public License</name>
+    		<url>https://creativecommons.org/licenses/by-sa/4.0/</url>
+    	</license>
+    </licenses>
 
     <description>
         Plugin for Jenkins-Pipeline platform which allows you to perform various steps like creating a page or attach
