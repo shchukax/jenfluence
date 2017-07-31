@@ -1,22 +1,23 @@
 package de.sprengnetter.jenkins.plugins.jenfluence.step.descriptor;
 
+import javax.annotation.Nonnull;
+import org.jenkinsci.plugins.workflow.steps.StepContext;
+import org.jenkinsci.plugins.workflow.steps.StepExecution;
+import org.kohsuke.stapler.DataBoundConstructor;
 import de.sprengnetter.jenkins.plugins.jenfluence.step.AbstractStep;
 import de.sprengnetter.jenkins.plugins.jenfluence.step.AbstractStepDesciptor;
 import de.sprengnetter.jenkins.plugins.jenfluence.step.By;
 import de.sprengnetter.jenkins.plugins.jenfluence.step.execution.CreatePageExecution;
 import hudson.Extension;
-import org.jenkinsci.plugins.workflow.steps.StepContext;
-import org.jenkinsci.plugins.workflow.steps.StepExecution;
-import org.kohsuke.stapler.DataBoundConstructor;
-
-import javax.annotation.Nonnull;
 
 /**
  * @author Oliver Breitenbach
  * @version 1.0.0
- * Descriptor and definition of the step "createPage" which allows the user tpo create a page.
+ *          Descriptor and definition of the step "createPage" which allows the user tpo create a page.
  */
 public class CreatePageStep extends AbstractStep {
+
+    private static final long serialVersionUID = -7249517566925303127L;
 
     private String title;
     private String spaceKey;
@@ -26,10 +27,14 @@ public class CreatePageStep extends AbstractStep {
     /**
      * Constructor which takes the necessary information to create a page.
      *
-     * @param title    The title of the page.
-     * @param spaceKey The key of the space.
-     * @param by       The specification of an optional parent page.
-     * @param content  The content of the page (can be in HTML format).
+     * @param title
+     *        The title of the page.
+     * @param spaceKey
+     *        The key of the space.
+     * @param by
+     *        The specification of an optional parent page.
+     * @param content
+     *        The content of the page (can be in HTML format).
      */
     @DataBoundConstructor
     public CreatePageStep(final String title, final String spaceKey, final By by, final String content) {
@@ -46,9 +51,11 @@ public class CreatePageStep extends AbstractStep {
     }
 
     /**
-     * Used by the radioboxes on the view to initially check the correct radio button if there is already a value defined in this instance.
+     * Used by the radioboxes on the view to initially check the correct radio button if there is already a value defined in this
+     * instance.
      *
-     * @param identifiedBy Specification of the parent page identifier.
+     * @param identifiedBy
+     *        Specification of the parent page identifier.
      * @return True if the input String equals the value defined in {@link By}.
      */
     public String isIdentifiedBy(final String identifiedBy) {

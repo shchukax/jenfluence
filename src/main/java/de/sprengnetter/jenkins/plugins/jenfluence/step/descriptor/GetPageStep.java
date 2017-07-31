@@ -1,21 +1,22 @@
 package de.sprengnetter.jenkins.plugins.jenfluence.step.descriptor;
 
+import javax.annotation.Nonnull;
+import org.jenkinsci.plugins.workflow.steps.StepContext;
+import org.jenkinsci.plugins.workflow.steps.StepExecution;
+import org.kohsuke.stapler.DataBoundConstructor;
 import de.sprengnetter.jenkins.plugins.jenfluence.step.AbstractStep;
 import de.sprengnetter.jenkins.plugins.jenfluence.step.AbstractStepDesciptor;
 import de.sprengnetter.jenkins.plugins.jenfluence.step.execution.GetPageExecution;
 import hudson.Extension;
-import org.jenkinsci.plugins.workflow.steps.StepContext;
-import org.jenkinsci.plugins.workflow.steps.StepExecution;
-import org.kohsuke.stapler.DataBoundConstructor;
-
-import javax.annotation.Nonnull;
 
 /**
  * @author Oliver Breitenbach
  * @version 1.0.0
- * Respresentation of the step "getPage".
+ *          Respresentation of the step "getPage".
  */
 public class GetPageStep extends AbstractStep {
+
+    private static final long serialVersionUID = 3468957590142286492L;
 
     private String spaceKey;
 
@@ -24,8 +25,10 @@ public class GetPageStep extends AbstractStep {
     /**
      * Constructor that takes the information about the searched page.
      *
-     * @param spaceKey The key of the space where the searched page is located in.
-     * @param title    The title of the searched page.
+     * @param spaceKey
+     *        The key of the space where the searched page is located in.
+     * @param title
+     *        The title of the searched page.
      */
     @DataBoundConstructor
     public GetPageStep(final String spaceKey, final String title) {

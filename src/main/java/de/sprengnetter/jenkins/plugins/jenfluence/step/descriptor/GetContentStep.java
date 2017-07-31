@@ -1,21 +1,22 @@
 package de.sprengnetter.jenkins.plugins.jenfluence.step.descriptor;
 
+import javax.annotation.Nonnull;
+import org.jenkinsci.plugins.workflow.steps.StepContext;
+import org.jenkinsci.plugins.workflow.steps.StepExecution;
+import org.kohsuke.stapler.DataBoundConstructor;
 import de.sprengnetter.jenkins.plugins.jenfluence.step.AbstractStep;
 import de.sprengnetter.jenkins.plugins.jenfluence.step.AbstractStepDesciptor;
 import de.sprengnetter.jenkins.plugins.jenfluence.step.execution.GetContentExecution;
 import hudson.Extension;
-import org.jenkinsci.plugins.workflow.steps.StepContext;
-import org.jenkinsci.plugins.workflow.steps.StepExecution;
-import org.kohsuke.stapler.DataBoundConstructor;
-
-import javax.annotation.Nonnull;
 
 /**
  * @author Oliver Breitenbach
  * @version 1.0.0
- * Representation of the getContent step.
+ *          Representation of the getContent step.
  */
 public class GetContentStep extends AbstractStep {
+
+    private static final long serialVersionUID = -987192953228682101L;
 
     private final String spaceKey;
 
@@ -43,6 +44,7 @@ public class GetContentStep extends AbstractStep {
 
     /**
      * Returns the limit.
+     * 
      * @return The limit.
      */
     public Integer getLimit() {

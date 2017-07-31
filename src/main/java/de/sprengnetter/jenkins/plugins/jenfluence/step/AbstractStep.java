@@ -1,17 +1,18 @@
 package de.sprengnetter.jenkins.plugins.jenfluence.step;
 
+import java.io.Serializable;
+import org.jenkinsci.plugins.workflow.steps.Step;
 import de.sprengnetter.jenkins.plugins.jenfluence.ConfluenceSite;
 import jenkins.model.Jenkins;
-import org.jenkinsci.plugins.workflow.steps.Step;
-
-import java.io.Serializable;
 
 /**
  * @author Oliver Breitenbach
  * @version 1.0.0
- * Abstract base class for all the available steps within this plugin.
+ *          Abstract base class for all the available steps within this plugin.
  */
 public abstract class AbstractStep extends Step implements Serializable {
+
+    private static final long serialVersionUID = -2394672691414818804L;
 
     private ConfluenceSite site;
 
@@ -20,17 +21,16 @@ public abstract class AbstractStep extends Step implements Serializable {
      * and constructs an instance of {@link ConfluenceSite} which can be used by the steps.
      */
     public AbstractStep() {
-        ConfluenceSite.ConfluenceSiteDescriptor siteDescriptor = (ConfluenceSite.ConfluenceSiteDescriptor)
-                Jenkins.getInstance().getDescriptor(ConfluenceSite.class);
+        ConfluenceSite.ConfluenceSiteDescriptor siteDescriptor = (ConfluenceSite.ConfluenceSiteDescriptor) Jenkins.getInstance()
+            .getDescriptor(ConfluenceSite.class);
 
         this.site = new ConfluenceSite(
-                siteDescriptor.getUsername(),
-                siteDescriptor.getPassword(),
-                siteDescriptor.getUrl(),
-                siteDescriptor.getAuthenticationType(),
-                siteDescriptor.getTimeout(),
-                siteDescriptor.getPoolSize()
-        );
+            siteDescriptor.getUsername(),
+            siteDescriptor.getPassword(),
+            siteDescriptor.getUrl(),
+            siteDescriptor.getAuthenticationType(),
+            siteDescriptor.getTimeout(),
+            siteDescriptor.getPoolSize());
     }
 
     /**

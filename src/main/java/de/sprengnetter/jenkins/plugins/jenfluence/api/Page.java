@@ -1,10 +1,9 @@
 package de.sprengnetter.jenkins.plugins.jenfluence.api;
 
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
-
 import java.io.Serializable;
 import java.util.List;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * @author Oliver Breitenbach
@@ -12,6 +11,8 @@ import java.util.List;
  */
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class Page implements Serializable {
+
+    private static final long serialVersionUID = 2988711873193354989L;
 
     @JsonProperty("type")
     private String type;
@@ -71,11 +72,11 @@ public class Page implements Serializable {
     @Override
     public String toString() {
         return "Page{" +
-                "type='" + type + '\'' +
-                ", title='" + title + '\'' +
-                ", space=" + space +
-                ", body=" + body +
-                ", ancestors=" + ancestors +
-                '}';
+            "type='" + type + '\'' +
+            ", title='" + title + '\'' +
+            ", space=" + space +
+            ", body=" + body +
+            ", ancestors=" + ancestors +
+            '}';
     }
 }

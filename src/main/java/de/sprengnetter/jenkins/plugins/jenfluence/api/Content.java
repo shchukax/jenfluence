@@ -1,11 +1,10 @@
 package de.sprengnetter.jenkins.plugins.jenfluence.api;
 
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
-
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 
 /**
@@ -14,6 +13,8 @@ import java.util.List;
  */
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class Content implements Serializable {
+
+    private static final long serialVersionUID = -2159763143888638380L;
 
     @JsonProperty("start")
     private Integer start;
@@ -73,11 +74,11 @@ public class Content implements Serializable {
     @Override
     public String toString() {
         return "Content{" +
-                "start=" + start +
-                ", limit=" + limit +
-                ", size=" + size +
-                ", links=" + links +
-                ", results=" + results +
-                '}';
+            "start=" + start +
+            ", limit=" + limit +
+            ", size=" + size +
+            ", links=" + links +
+            ", results=" + results +
+            '}';
     }
 }

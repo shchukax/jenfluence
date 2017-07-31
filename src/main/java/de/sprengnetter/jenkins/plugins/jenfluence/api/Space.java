@@ -1,13 +1,12 @@
 package de.sprengnetter.jenkins.plugins.jenfluence.api;
 
+import java.io.Serializable;
+import java.util.HashMap;
+import java.util.Map;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
-
-import java.io.Serializable;
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * @author Oliver Breitenbach
@@ -15,6 +14,8 @@ import java.util.Map;
  */
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class Space implements Serializable {
+
+    private static final long serialVersionUID = -2534635637162826958L;
 
     @JsonProperty("key")
     private String key;
@@ -42,8 +43,8 @@ public class Space implements Serializable {
     @Override
     public String toString() {
         return "Space{" +
-                "key='" + key + '\'' +
-                ", unmappedFields=" + unmappedFields +
-                '}';
+            "key='" + key + '\'' +
+            ", unmappedFields=" + unmappedFields +
+            '}';
     }
 }

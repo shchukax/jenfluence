@@ -1,12 +1,11 @@
 package de.sprengnetter.jenkins.plugins.jenfluence.api;
 
-import com.fasterxml.jackson.annotation.JsonAnySetter;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
-
 import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
+import com.fasterxml.jackson.annotation.JsonAnySetter;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * @author Oliver Breitenbach
@@ -14,6 +13,8 @@ import java.util.Map;
  */
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class Links implements Serializable {
+
+    private static final long serialVersionUID = -3865404921928369686L;
 
     @JsonProperty("webui")
     private String webUi;
@@ -62,10 +63,10 @@ public class Links implements Serializable {
     @Override
     public String toString() {
         return "Links{" +
-                "webUi='" + webUi + '\'' +
-                ", tinyUi='" + tinyUi + '\'' +
-                ", self='" + self + '\'' +
-                ", unmappedFields=" + unmappedFields +
-                '}';
+            "webUi='" + webUi + '\'' +
+            ", tinyUi='" + tinyUi + '\'' +
+            ", self='" + self + '\'' +
+            ", unmappedFields=" + unmappedFields +
+            '}';
     }
 }

@@ -1,13 +1,12 @@
 package de.sprengnetter.jenkins.plugins.jenfluence.api;
 
+import java.io.Serializable;
+import java.util.HashMap;
+import java.util.Map;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
-
-import java.io.Serializable;
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * @author Oliver Breitenbach
@@ -15,6 +14,8 @@ import java.util.Map;
  */
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class Storage implements Serializable {
+
+    private static final long serialVersionUID = 6166482514595995388L;
 
     @JsonProperty("value")
     private String value;
@@ -53,9 +54,9 @@ public class Storage implements Serializable {
     @Override
     public String toString() {
         return "Storage{" +
-                "value='" + value + '\'' +
-                ", representation='" + representation + '\'' +
-                ", unmappedFields=" + unmappedFields +
-                '}';
+            "value='" + value + '\'' +
+            ", representation='" + representation + '\'' +
+            ", unmappedFields=" + unmappedFields +
+            '}';
     }
 }

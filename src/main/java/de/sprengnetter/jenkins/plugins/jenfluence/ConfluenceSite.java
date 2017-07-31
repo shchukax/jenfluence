@@ -1,21 +1,20 @@
 package de.sprengnetter.jenkins.plugins.jenfluence;
 
+import java.io.Serializable;
+import java.net.MalformedURLException;
+import java.net.URISyntaxException;
+import java.net.URL;
+import javax.annotation.Nonnull;
+import org.kohsuke.stapler.DataBoundConstructor;
+import org.kohsuke.stapler.DataBoundSetter;
+import org.kohsuke.stapler.QueryParameter;
+import org.kohsuke.stapler.StaplerRequest;
 import de.sprengnetter.jenkins.plugins.jenfluence.util.HttpUtil;
 import hudson.Extension;
 import hudson.model.AbstractDescribableImpl;
 import hudson.model.Descriptor;
 import hudson.util.FormValidation;
 import net.sf.json.JSONObject;
-import org.kohsuke.stapler.DataBoundConstructor;
-import org.kohsuke.stapler.DataBoundSetter;
-import org.kohsuke.stapler.QueryParameter;
-import org.kohsuke.stapler.StaplerRequest;
-
-import javax.annotation.Nonnull;
-import java.io.Serializable;
-import java.net.MalformedURLException;
-import java.net.URISyntaxException;
-import java.net.URL;
 
 /**
  * Representation of a configured site for confluence.
@@ -24,6 +23,8 @@ import java.net.URL;
  * @version 1.0.0
  */
 public class ConfluenceSite extends AbstractDescribableImpl<ConfluenceSite> implements Serializable {
+
+    private static final long serialVersionUID = -1895419369131803022L;
 
     private String username;
 
@@ -42,15 +43,22 @@ public class ConfluenceSite extends AbstractDescribableImpl<ConfluenceSite> impl
     /**
      * Constructor that takes the values of this instance.
      *
-     * @param username           The username of the confluence user.
-     * @param password           The password of the confluence user.
-     * @param url                The base URL of Confluence.
-     * @param authenticationType The desired type of authentication.
-     * @param timeout            The desired timeout for the connection.
-     * @param poolSize           The max connection pool size.
+     * @param username
+     *        The username of the confluence user.
+     * @param password
+     *        The password of the confluence user.
+     * @param url
+     *        The base URL of Confluence.
+     * @param authenticationType
+     *        The desired type of authentication.
+     * @param timeout
+     *        The desired timeout for the connection.
+     * @param poolSize
+     *        The max connection pool size.
      */
     @DataBoundConstructor
-    public ConfluenceSite(final String username, final String password, final URL url, final AuthenticationType authenticationType, final Integer timeout, final Integer poolSize) {
+    public ConfluenceSite(final String username, final String password, final URL url, final AuthenticationType authenticationType,
+        final Integer timeout, final Integer poolSize) {
         this.username = username;
         this.url = url;
         this.password = password;
@@ -76,7 +84,8 @@ public class ConfluenceSite extends AbstractDescribableImpl<ConfluenceSite> impl
     /**
      * Sets the username of the Confluence user.
      *
-     * @param userName The value for username.
+     * @param userName
+     *        The value for username.
      */
     @DataBoundSetter
     public void setUserName(final String userName) {
@@ -95,7 +104,8 @@ public class ConfluenceSite extends AbstractDescribableImpl<ConfluenceSite> impl
     /**
      * Sets the base URL of Confluence.
      *
-     * @param url The base URL of Confluence.
+     * @param url
+     *        The base URL of Confluence.
      */
     @DataBoundSetter
     public void setUrl(final URL url) {
@@ -114,7 +124,8 @@ public class ConfluenceSite extends AbstractDescribableImpl<ConfluenceSite> impl
     /**
      * Sets the password of the Confluence user.
      *
-     * @param password The password of the Confluence user.
+     * @param password
+     *        The password of the Confluence user.
      */
     @DataBoundSetter
     public void setPassword(final String password) {
@@ -133,7 +144,8 @@ public class ConfluenceSite extends AbstractDescribableImpl<ConfluenceSite> impl
     /**
      * Sets the type of authentication.
      *
-     * @param authenticationType The type of authentication.
+     * @param authenticationType
+     *        The type of authentication.
      */
     @DataBoundSetter
     public void setAuthenticationType(final AuthenticationType authenticationType) {
@@ -152,7 +164,8 @@ public class ConfluenceSite extends AbstractDescribableImpl<ConfluenceSite> impl
     /**
      * Sets the timeout for the connections.
      *
-     * @param timeout The timeout for the connections.
+     * @param timeout
+     *        The timeout for the connections.
      */
     @DataBoundSetter
     public void setTimeout(final Integer timeout) {
@@ -171,7 +184,8 @@ public class ConfluenceSite extends AbstractDescribableImpl<ConfluenceSite> impl
     /**
      * Sets the max pool size for the connection pool.
      *
-     * @param poolSize The max pool size for the connection pool.
+     * @param poolSize
+     *        The max pool size for the connection pool.
      */
     @DataBoundSetter
     public void setPoolSize(Integer poolSize) {
@@ -183,6 +197,8 @@ public class ConfluenceSite extends AbstractDescribableImpl<ConfluenceSite> impl
      */
     @Extension
     public static final class ConfluenceSiteDescriptor extends Descriptor<ConfluenceSite> implements Serializable {
+
+        private static final long serialVersionUID = 7773097811656159514L;
 
         private String username;
         private String password;
@@ -224,16 +240,20 @@ public class ConfluenceSite extends AbstractDescribableImpl<ConfluenceSite> impl
         /**
          * Tests the connection with the data from the view.
          *
-         * @param username The username of the Confluence user.
-         * @param password The password of the Confluence user.
-         * @param url      The base URL of Confluence.l
-         * @param timeout  The timeout for the connections.
+         * @param username
+         *        The username of the Confluence user.
+         * @param password
+         *        The password of the Confluence user.
+         * @param url
+         *        The base URL of Confluence.l
+         * @param timeout
+         *        The timeout for the connections.
          * @return FormValidation to show a success or an error on the view.
          */
         public FormValidation doTestConnection(@QueryParameter("username") final String username,
-                                               @QueryParameter("password") final String password,
-                                               @QueryParameter("url") final String url,
-                                               @QueryParameter("timeout") final Integer timeout) {
+            @QueryParameter("password") final String password,
+            @QueryParameter("url") final String url,
+            @QueryParameter("timeout") final Integer timeout) {
             try {
                 validate(username, password, url, timeout);
                 URL confluenceUrl = new URL(url);
