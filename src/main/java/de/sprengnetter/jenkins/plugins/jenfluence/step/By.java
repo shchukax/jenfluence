@@ -2,12 +2,14 @@ package de.sprengnetter.jenkins.plugins.jenfluence.step;
 
 import org.kohsuke.stapler.DataBoundConstructor;
 
+import java.io.Serializable;
+
 /**
  * @author Oliver Breitenbach
  * @version 1.0.0
  * Model for the specification of a parent page in Confluence.
  */
-public class By {
+public class By implements Serializable {
 
     // TITLE, ID or NONE
     private String value;

@@ -1,9 +1,10 @@
 package de.sprengnetter.jenkins.plugins.jenfluence.step;
 
-import java.io.Serializable;
-import org.jenkinsci.plugins.workflow.steps.Step;
 import de.sprengnetter.jenkins.plugins.jenfluence.ConfluenceSite;
 import jenkins.model.Jenkins;
+import org.jenkinsci.plugins.workflow.steps.Step;
+
+import java.io.Serializable;
 
 /**
  * @author Oliver Breitenbach
@@ -24,13 +25,15 @@ public abstract class AbstractStep extends Step implements Serializable {
         ConfluenceSite.ConfluenceSiteDescriptor siteDescriptor = (ConfluenceSite.ConfluenceSiteDescriptor) Jenkins.getInstance()
             .getDescriptor(ConfluenceSite.class);
 
-        this.site = new ConfluenceSite(
-            siteDescriptor.getUsername(),
-            siteDescriptor.getPassword(),
-            siteDescriptor.getUrl(),
-            siteDescriptor.getAuthenticationType(),
-            siteDescriptor.getTimeout(),
-            siteDescriptor.getPoolSize());
+        if (siteDescriptor != null) {
+            this.site = new ConfluenceSite(
+                siteDescriptor.getUsername(),
+                siteDescriptor.getPassword(),
+                siteDescriptor.getUrl(),
+                siteDescriptor.getAuthenticationType(),
+                siteDescriptor.getTimeout(),
+                siteDescriptor.getPoolSize());
+        }
     }
 
     /**
