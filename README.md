@@ -1,6 +1,10 @@
-# jenfluence
+# Confluence Pipeline Steps Plugin (formerly "jenfluence")
 Jenkins (workflow) plugin that is able to publish information on Atlassian Confluence pages.
 
 Currently, the only feature is to create or retrieve a page via the Confluence REST API.
 
 Our future plans are to extend the plugin so that only certain areas on a page can be updated or information can be inserted at specified markers. The deletion of pages and the publishing of other plugin data such as checkstyle, findbugs, javadoc or jacoco mark further milestones.
+
+Legal notice:
+All published trademarks and product names are property of their respective owners and may be claimed by a third party and are subject to the terms of use of the respective trademark laws and the ownership rights of the possessing party. Simply because they are named here, it cannot be concluded that trademarks are not protected through rights of a third party.
+We fully respect these laws and these companies and acknowledge that prodct, company and service names may be published within our code and documents without further designation.
