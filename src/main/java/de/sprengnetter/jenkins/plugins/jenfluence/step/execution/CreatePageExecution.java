@@ -1,23 +1,18 @@
 package de.sprengnetter.jenkins.plugins.jenfluence.step.execution;
 
-import java.util.Collections;
-import org.jenkinsci.plugins.workflow.steps.StepContext;
 import de.sprengnetter.jenkins.plugins.jenfluence.ConfluenceSite;
-import de.sprengnetter.jenkins.plugins.jenfluence.api.Ancestor;
-import de.sprengnetter.jenkins.plugins.jenfluence.api.Body;
-import de.sprengnetter.jenkins.plugins.jenfluence.api.Content;
-import de.sprengnetter.jenkins.plugins.jenfluence.api.Page;
-import de.sprengnetter.jenkins.plugins.jenfluence.api.PageCreated;
-import de.sprengnetter.jenkins.plugins.jenfluence.api.Space;
-import de.sprengnetter.jenkins.plugins.jenfluence.api.Storage;
+import de.sprengnetter.jenkins.plugins.jenfluence.api.*;
 import de.sprengnetter.jenkins.plugins.jenfluence.service.ContentService;
 import de.sprengnetter.jenkins.plugins.jenfluence.step.AbstractStepExecution;
 import de.sprengnetter.jenkins.plugins.jenfluence.step.descriptor.CreatePageStep;
+import org.jenkinsci.plugins.workflow.steps.StepContext;
+
+import java.util.Collections;
 
 /**
  * @author Oliver Breitenbach
  * @version 1.0.0
- *          Execution implementation of the step "createPage".
+ * Execution implementation of the step "createPage".
  */
 public class CreatePageExecution extends AbstractStepExecution<PageCreated, CreatePageStep> {
 
@@ -26,12 +21,9 @@ public class CreatePageExecution extends AbstractStepExecution<PageCreated, Crea
     /**
      * Constructor that takes the needed information for the execution of the step.
      *
-     * @param createPageStep
-     *        The step that is going to be executed.
-     * @param context
-     *        The step context.
-     * @param confluenceSite
-     *        The configured site of Confluence.
+     * @param createPageStep The step that is going to be executed.
+     * @param context        The step context.
+     * @param confluenceSite The configured site of Confluence.
      */
     public CreatePageExecution(final CreatePageStep createPageStep, final StepContext context, final ConfluenceSite confluenceSite) {
         super(createPageStep, context, confluenceSite);
@@ -77,12 +69,15 @@ public class CreatePageExecution extends AbstractStepExecution<PageCreated, Crea
         Ancestor ancestor = new Ancestor();
 
         switch (getStep().getBy().getValue().toLowerCase()) {
-        case "title":
-            ancestor.setId(getParentId());
-            break;
-        case "id":
-            ancestor.setId(Integer.parseInt(getStep().getBy().getParentIdentifier()));
-            break;
+            case "title":
+                ancestor.setId(getParentId());
+                break;
+            case "id":
+                ancestor.setId(Integer.parseInt(getStep().getBy().getParentIdentifier()));
+                break;
+            default:
+                ancestor.setId(null);
+                break;
         }
 
         page.setAncestors(Collections.singletonList(ancestor));
@@ -104,7 +99,7 @@ public class CreatePageExecution extends AbstractStepExecution<PageCreated, Crea
 
         if (content.getResults().get(0).getId() == null || content.getResults().size() == 0) {
             throw new IllegalStateException("No parent page with name " + getStep().getBy().getParentIdentifier() + " in space with key "
-                + getStep().getSpaceKey() + " was found");
+                    + getStep().getSpaceKey() + " was found");
         }
 
         /*
@@ -114,7 +109,7 @@ public class CreatePageExecution extends AbstractStepExecution<PageCreated, Crea
          */
         if (content.getResults().size() > 1) {
             throw new IllegalStateException("Multiple possible parent pages with the name " + getStep().getBy().getParentIdentifier()
-                + "in space with key " + getStep().getSpaceKey() + " were found");
+                    + "in space with key " + getStep().getSpaceKey() + " were found");
         }
         return content.getResults().get(0).getId();
     }
