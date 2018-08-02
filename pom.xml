@@ -10,7 +10,7 @@
 	</parent>
 
 	<groupId>de.sprengnetter.jenkins.plugins</groupId>
-	<artifactId>confluence-pipeline-steps</artifactId>
+	<artifactId>jenfluence</artifactId>
 	<version>0.1</version>
 	<packaging>hpi</packaging>
 	<name>Confluence Pipeline Steps Plugin</name>
