@@ -115,7 +115,7 @@ public final class HttpUtil {
      */
     public static boolean isReachable(final URL url, final Integer timeout) {
         try (Socket socket = new Socket()) {
-            socket.connect(new InetSocketAddress(url.getHost(), 80), timeout);
+            socket.connect(new InetSocketAddress(url.getHost(), 9090), timeout);
             return true;
         } catch (IOException e) {
             return false;

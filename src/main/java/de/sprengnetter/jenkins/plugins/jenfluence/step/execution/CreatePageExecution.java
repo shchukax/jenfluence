@@ -1,12 +1,16 @@
 package de.sprengnetter.jenkins.plugins.jenfluence.step.execution;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import de.sprengnetter.jenkins.plugins.jenfluence.ConfluenceSite;
 import de.sprengnetter.jenkins.plugins.jenfluence.api.*;
 import de.sprengnetter.jenkins.plugins.jenfluence.service.ContentService;
 import de.sprengnetter.jenkins.plugins.jenfluence.step.AbstractStepExecution;
 import de.sprengnetter.jenkins.plugins.jenfluence.step.descriptor.CreatePageStep;
 import org.jenkinsci.plugins.workflow.steps.StepContext;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
+import java.io.File;
 import java.util.Collections;
 
 /**
@@ -17,6 +21,8 @@ import java.util.Collections;
 public class CreatePageExecution extends AbstractStepExecution<PageCreated, CreatePageStep> {
 
     private static final long serialVersionUID = 7220386183041962984L;
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(CreatePageExecution.class);
 
     /**
      * Constructor that takes the needed information for the execution of the step.
@@ -51,6 +57,7 @@ public class CreatePageExecution extends AbstractStepExecution<PageCreated, Crea
     @Override
     protected PageCreated run() throws Exception {
         try {
+            new ObjectMapper().writeValue(new File("c:\\out.json"), toPage());
             return getService(ContentService.class).createPage(toPage());
         } catch (Exception e) {
             e.printStackTrace();
@@ -76,11 +83,16 @@ public class CreatePageExecution extends AbstractStepExecution<PageCreated, Crea
                 ancestor.setId(Integer.parseInt(getStep().getBy().getParentIdentifier()));
                 break;
             default:
-                ancestor.setId(null);
+                ancestor = null;
                 break;
         }
 
-        page.setAncestors(Collections.singletonList(ancestor));
+        if (ancestor == null) {
+            page.setAncestors(null);
+        } else {
+            page.setAncestors(Collections.singletonList(ancestor));
+        }
+
         page.setSpace(space);
 
         Body body = new Body();
