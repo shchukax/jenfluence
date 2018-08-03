@@ -57,7 +57,6 @@ public class CreatePageExecution extends AbstractStepExecution<PageCreated, Crea
     @Override
     protected PageCreated run() throws Exception {
         try {
-            new ObjectMapper().writeValue(new File("c:\\out.json"), toPage());
             return getService(ContentService.class).createPage(toPage());
         } catch (Exception e) {
             e.printStackTrace();
