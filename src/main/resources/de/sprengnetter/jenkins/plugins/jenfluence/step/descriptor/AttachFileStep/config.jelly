@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?jelly escape-by-default='true'?>
+<j:jelly
+        xmlns:j="jelly:core"
+        xmlns:st="jelly:stapler"
+        xmlns:d="jelly:define"
+        xmlns:l="/lib/layout"
+        xmlns:t="/lib/hudson"
+        xmlns:f="/lib/form"
+        xmlns:i="jelly:fmt">
+
+    <f:section title="General">
+        <f:entry field="title" title="Page title" description="The title of the page to attach a file to">
+            <f:textbox/>
+        </f:entry>
+    </f:section>
+
+    <f:entry field="spaceKey" title="Space key" description="The key of the space in which the page is located">
+        <f:textbox/>
+    </f:entry>
+
+    <f:entry field="filePath" title="Filepath"
+             description="The path of the file which gets attached to a page (relative/absolute paths are supported)">
+        <f:textbox/>
+    </f:entry>
+
+</j:jelly>
