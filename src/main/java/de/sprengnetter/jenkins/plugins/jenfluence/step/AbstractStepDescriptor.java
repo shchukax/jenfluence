@@ -15,7 +15,7 @@ import java.util.Set;
  * Abstract base class which declares the methods that MUST be overridden by the step descriptors.
  * Each step contains an inner class, the descriptor that is used by Jenkins, that should extend this class.
  */
-public abstract class AbstractStepDesciptor extends StepDescriptor {
+public abstract class AbstractStepDescriptor extends StepDescriptor {
 
     @Nonnull
     @Override

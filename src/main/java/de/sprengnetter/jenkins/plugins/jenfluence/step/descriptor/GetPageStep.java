@@ -5,7 +5,7 @@ import org.jenkinsci.plugins.workflow.steps.StepContext;
 import org.jenkinsci.plugins.workflow.steps.StepExecution;
 import org.kohsuke.stapler.DataBoundConstructor;
 import de.sprengnetter.jenkins.plugins.jenfluence.step.AbstractStep;
-import de.sprengnetter.jenkins.plugins.jenfluence.step.AbstractStepDesciptor;
+import de.sprengnetter.jenkins.plugins.jenfluence.step.AbstractStepDescriptor;
 import de.sprengnetter.jenkins.plugins.jenfluence.step.execution.GetPageExecution;
 import hudson.Extension;
 
@@ -60,7 +60,7 @@ public class GetPageStep extends AbstractStep {
     }
 
     @Extension
-    public static class Descriptor extends AbstractStepDesciptor {
+    public static class Descriptor extends AbstractStepDescriptor {
 
         @Nonnull
         @Override
