@@ -63,6 +63,7 @@
         <commons.validator.version>1.6</commons.validator.version>
         <commons.digster.version>2.1</commons.digster.version>
         <jersey.common.version>2.27</jersey.common.version>
+        <okhttp.version>2.7.5</okhttp.version>
 
         <!--Plugins -->
         <maven.source.version>3.0.1</maven.source.version>
@@ -102,6 +103,13 @@
     </pluginRepositories>
 
     <dependencies>
+        <!--HTTP-Client framework-->
+        <dependency>
+            <groupId>com.squareup.okhttp</groupId>
+            <artifactId>okhttp</artifactId>
+            <version>${okhttp.version}</version>
+        </dependency>
+
         <!--Jackson -->
         <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>
