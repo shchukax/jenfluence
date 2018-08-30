@@ -3,6 +3,7 @@ package de.sprengnetter.jenkins.plugins.jenfluence.step;
 import com.sun.org.apache.xerces.internal.util.EntityResolverWrapper;
 import de.sprengnetter.jenkins.plugins.jenfluence.ConfluenceSite;
 import de.sprengnetter.jenkins.plugins.jenfluence.service.BaseService;
+import de.sprengnetter.jenkins.plugins.jenfluence.service.ContentServiceImpl;
 import org.apache.commons.io.IOUtils;
 import org.jboss.resteasy.client.jaxrs.BasicAuthentication;
 import org.jboss.resteasy.client.jaxrs.ResteasyClient;
@@ -88,27 +89,15 @@ public abstract class AbstractStepExecution<R, T extends AbstractStep> extends S
      * @return An instance of the desired service.
      */
     protected <S extends BaseService> S getService(final Class<S> clazz) {
-        return target.proxyBuilder(clazz).classloader(clazz.getClassLoader()).build();
+        switch (clazz.getSimpleName()) {
+            case "ContentService":
+                return clazz.cast(new ContentServiceImpl());
+            default:
+                throw new IllegalArgumentException(String.format("\"%s\" is not a valid service", clazz.getSimpleName()));
+        }
     }
 
     private void initClient(final ConfluenceSite confluenceSite) {
-        client = new ResteasyClientBuilder()
-                .register(ResteasyJackson2Provider.class)
-                .register(MultipartWriter.class)
-                .register(FileProvider.class)
-                .register(new BasicAuthentication(confluenceSite.getUserName(), confluenceSite.getPassword()))
-                .register((ClientRequestFilter) requestContext -> {
-                    MultivaluedMap<String, Object> headers = requestContext.getHeaders();
-                    headers.add("X-Atlassian-Token", "no-check");
-                })
-                .register((ClientRequestFilter) requestContext -> System.out.println("Headers: " + requestContext.getHeaders() + "----" +
-                        requestContext.getEntity().toString()))
-                .register((ClientResponseFilter) (requestContext, responseContext) -> {
-                    if (responseContext.getStatus() != 200) {
-                        LOGGER.error("Response message:");
-                        LOGGER.error(IOUtils.toString(responseContext.getEntityStream(), StandardCharsets.UTF_8));
-                    }
-                }).build();
 
         clientInitialized = true;
     }
