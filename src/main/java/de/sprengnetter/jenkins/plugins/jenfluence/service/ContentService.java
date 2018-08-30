@@ -4,15 +4,9 @@ package de.sprengnetter.jenkins.plugins.jenfluence.service;
 import de.sprengnetter.jenkins.plugins.jenfluence.api.Content;
 import de.sprengnetter.jenkins.plugins.jenfluence.api.Page;
 import de.sprengnetter.jenkins.plugins.jenfluence.api.PageCreated;
-import org.jboss.resteasy.annotations.providers.multipart.MultipartForm;
-import org.jboss.resteasy.plugins.providers.multipart.MultipartFormDataOutput;
-import org.jboss.resteasy.plugins.providers.multipart.MultipartOutput;
 
 import javax.ws.rs.*;
-import javax.ws.rs.client.Entity;
-import javax.ws.rs.core.GenericEntity;
 import javax.ws.rs.core.MediaType;
-import java.io.File;
 
 /**
  * @author Oliver Breitenbach
@@ -86,5 +80,5 @@ public interface ContentService extends BaseService {
     @POST
     @Path("{id}/child/attachment")
     @Consumes(MediaType.MULTIPART_FORM_DATA)
-    void attachFile(@PathParam("id") final String id, MultipartOutput output);
+    void attachFile(@PathParam("id") final String id);
 }

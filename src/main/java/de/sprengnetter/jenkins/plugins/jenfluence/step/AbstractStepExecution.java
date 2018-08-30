@@ -1,27 +1,14 @@
 package de.sprengnetter.jenkins.plugins.jenfluence.step;
 
-import com.sun.org.apache.xerces.internal.util.EntityResolverWrapper;
 import de.sprengnetter.jenkins.plugins.jenfluence.ConfluenceSite;
 import de.sprengnetter.jenkins.plugins.jenfluence.service.BaseService;
 import de.sprengnetter.jenkins.plugins.jenfluence.service.ContentServiceImpl;
-import org.apache.commons.io.IOUtils;
-import org.jboss.resteasy.client.jaxrs.BasicAuthentication;
-import org.jboss.resteasy.client.jaxrs.ResteasyClient;
-import org.jboss.resteasy.client.jaxrs.ResteasyClientBuilder;
-import org.jboss.resteasy.client.jaxrs.ResteasyWebTarget;
-import org.jboss.resteasy.plugins.providers.FileProvider;
-import org.jboss.resteasy.plugins.providers.jackson.ResteasyJackson2Provider;
-import org.jboss.resteasy.plugins.providers.multipart.*;
 import org.jenkinsci.plugins.workflow.steps.StepContext;
 import org.jenkinsci.plugins.workflow.steps.SynchronousNonBlockingStepExecution;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import javax.ws.rs.client.ClientRequestFilter;
-import javax.ws.rs.client.ClientResponseFilter;
-import javax.ws.rs.core.MultivaluedMap;
 import java.net.URISyntaxException;
-import java.nio.charset.StandardCharsets;
 
 /**
  * @param <R> The return type of the execution.
@@ -36,10 +23,8 @@ public abstract class AbstractStepExecution<R, T extends AbstractStep> extends S
 
     private static final transient Logger LOGGER = LoggerFactory.getLogger(AbstractStepExecution.class);
 
-    private static transient ResteasyClient client;
     private static transient boolean clientInitialized = false;
     private final transient T step;
-    private transient ResteasyWebTarget target;
 
     /**
      * Constructor which takes the information to initialize the execution of the step.
@@ -51,14 +36,9 @@ public abstract class AbstractStepExecution<R, T extends AbstractStep> extends S
     public AbstractStepExecution(final T step, final StepContext context, final ConfluenceSite confluenceSite) {
         super(context);
         this.step = step;
-        try {
-            validate(step);
-            if (!clientInitialized) {
-                initClient(confluenceSite);
-            }
-            target = client.target(step.getSite().getUrl().toURI());
-        } catch (URISyntaxException e) {
-            LOGGER.error("URI build from URL " + step.getSite().getUrl() + " is malformed");
+        validate(step);
+        if (!clientInitialized) {
+            initClient(confluenceSite);
         }
     }
 
@@ -109,9 +89,5 @@ public abstract class AbstractStepExecution<R, T extends AbstractStep> extends S
      */
     public T getStep() {
         return step;
-    }
-
-    public static ResteasyClient getClient() {
-        return client;
     }
 }
