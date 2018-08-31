@@ -2,13 +2,11 @@ package de.sprengnetter.jenkins.plugins.jenfluence.step;
 
 import de.sprengnetter.jenkins.plugins.jenfluence.ConfluenceSite;
 import de.sprengnetter.jenkins.plugins.jenfluence.service.BaseService;
-import de.sprengnetter.jenkins.plugins.jenfluence.service.ContentServiceImpl;
+import de.sprengnetter.jenkins.plugins.jenfluence.service.ContentService;
 import org.jenkinsci.plugins.workflow.steps.StepContext;
 import org.jenkinsci.plugins.workflow.steps.SynchronousNonBlockingStepExecution;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import java.net.URISyntaxException;
 
 /**
  * @param <R> The return type of the execution.
@@ -23,8 +21,9 @@ public abstract class AbstractStepExecution<R, T extends AbstractStep> extends S
 
     private static final transient Logger LOGGER = LoggerFactory.getLogger(AbstractStepExecution.class);
 
-    private static transient boolean clientInitialized = false;
     private final transient T step;
+
+    private final transient ConfluenceSite confluenceSite;
 
     /**
      * Constructor which takes the information to initialize the execution of the step.
@@ -35,11 +34,9 @@ public abstract class AbstractStepExecution<R, T extends AbstractStep> extends S
      */
     public AbstractStepExecution(final T step, final StepContext context, final ConfluenceSite confluenceSite) {
         super(context);
+        this.confluenceSite = confluenceSite;
         this.step = step;
         validate(step);
-        if (!clientInitialized) {
-            initClient(confluenceSite);
-        }
     }
 
     /**
@@ -71,15 +68,10 @@ public abstract class AbstractStepExecution<R, T extends AbstractStep> extends S
     protected <S extends BaseService> S getService(final Class<S> clazz) {
         switch (clazz.getSimpleName()) {
             case "ContentService":
-                return clazz.cast(new ContentServiceImpl());
+                return clazz.cast(new ContentService(confluenceSite));
             default:
                 throw new IllegalArgumentException(String.format("\"%s\" is not a valid service", clazz.getSimpleName()));
         }
-    }
-
-    private void initClient(final ConfluenceSite confluenceSite) {
-
-        clientInitialized = true;
     }
 
     /**

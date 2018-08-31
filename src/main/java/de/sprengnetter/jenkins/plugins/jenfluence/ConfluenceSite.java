@@ -38,6 +38,8 @@ public class ConfluenceSite extends AbstractDescribableImpl<ConfluenceSite> impl
 
     private Integer poolSize;
 
+    private boolean trustAllCertificates;
+
     private ConfluenceSiteDescriptor confluenceSiteDescriptor = new ConfluenceSiteDescriptor();
 
     /**
@@ -58,13 +60,14 @@ public class ConfluenceSite extends AbstractDescribableImpl<ConfluenceSite> impl
      */
     @DataBoundConstructor
     public ConfluenceSite(final String username, final String password, final URL url, final AuthenticationType authenticationType,
-        final Integer timeout, final Integer poolSize) {
+        final Integer timeout, final Integer poolSize, final boolean trustAllCertificates) {
         this.username = username;
         this.url = url;
         this.password = password;
         this.authenticationType = authenticationType;
         this.timeout = timeout;
         this.poolSize = poolSize;
+        this.trustAllCertificates = trustAllCertificates;
     }
 
     @Override
@@ -192,6 +195,15 @@ public class ConfluenceSite extends AbstractDescribableImpl<ConfluenceSite> impl
         this.poolSize = poolSize;
     }
 
+    public boolean getTrustAllCertificates() {
+        return trustAllCertificates;
+    }
+
+    @DataBoundSetter
+    public void setTrustAllCertificates(boolean trustAllCertificates) {
+        this.trustAllCertificates = trustAllCertificates;
+    }
+
     /**
      * Descriptor for {@link ConfluenceSite}.
      */
@@ -206,6 +218,7 @@ public class ConfluenceSite extends AbstractDescribableImpl<ConfluenceSite> impl
         private AuthenticationType authenticationType;
         private Integer timeout;
         private Integer poolSize;
+        private boolean trustAllCertificates;
 
         /**
          * Constructor that initializes the view.
@@ -232,6 +245,7 @@ public class ConfluenceSite extends AbstractDescribableImpl<ConfluenceSite> impl
             }
             timeout = json.getInt("timeout");
             poolSize = json.getInt("poolSize");
+            trustAllCertificates = json.getBoolean("trustAllCertificates");
             validate(username, password, url, timeout);
             save();
             return super.configure(req, json);
@@ -304,6 +318,10 @@ public class ConfluenceSite extends AbstractDescribableImpl<ConfluenceSite> impl
          */
         public String getPassword() {
             return password;
+        }
+
+        public boolean getTrustAllCertificates() {
+            return trustAllCertificates;
         }
 
         /**

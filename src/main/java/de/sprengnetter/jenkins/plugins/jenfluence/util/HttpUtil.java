@@ -2,10 +2,13 @@ package de.sprengnetter.jenkins.plugins.jenfluence.util;
 
 import org.apache.commons.validator.routines.UrlValidator;
 
+import javax.net.ssl.TrustManager;
+import javax.net.ssl.X509TrustManager;
 import java.io.IOException;
 import java.net.InetSocketAddress;
 import java.net.Socket;
 import java.net.URL;
+import java.security.cert.CertificateException;
 
 /**
  * @author Oliver Breitenbach
@@ -18,6 +21,25 @@ public final class HttpUtil {
      * Private constructor.
      */
     private HttpUtil() {
+    }
+
+    public static TrustManager[] buildAllTrustingManager() {
+        return new TrustManager[]{
+                new X509TrustManager() {
+                    @Override
+                    public void checkClientTrusted(java.security.cert.X509Certificate[] chain, String authType) {
+                    }
+
+                    @Override
+                    public void checkServerTrusted(java.security.cert.X509Certificate[] chain, String authType) {
+                    }
+
+                    @Override
+                    public java.security.cert.X509Certificate[] getAcceptedIssuers() {
+                        return new java.security.cert.X509Certificate[]{};
+                    }
+                }
+        };
     }
 
     /**

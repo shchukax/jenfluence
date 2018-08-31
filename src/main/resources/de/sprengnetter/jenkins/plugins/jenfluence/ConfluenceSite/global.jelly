@@ -38,6 +38,15 @@
             </select>
         </f:entry>
 
+        <f:entry>
+            <f:checkbox name="trustAllCertificates" checked="false" title="Trust all SSL-Certificates"
+                        default="${descriptor.trustAllCertificates()}">
+            </f:checkbox>
+            <p style="color:red">
+                <b>***WARNING*** Trusting all certificates can lead to massive security issues!</b>
+            </p>
+        </f:entry>
+
         <f:validateButton title="Test connection" progress="Testing..."
                           method="testConnection" with="username,password,url,timeout"/>
     </f:section>

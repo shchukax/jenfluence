@@ -9,7 +9,7 @@ import java.io.Serializable;
 /**
  * @author Oliver Breitenbach
  * @version 1.0.0
- *          Abstract base class for all the available steps within this plugin.
+ * Abstract base class for all the available steps within this plugin.
  */
 public abstract class AbstractStep extends Step implements Serializable {
 
@@ -23,16 +23,17 @@ public abstract class AbstractStep extends Step implements Serializable {
      */
     public AbstractStep() {
         ConfluenceSite.ConfluenceSiteDescriptor siteDescriptor = (ConfluenceSite.ConfluenceSiteDescriptor) Jenkins.getInstance()
-            .getDescriptor(ConfluenceSite.class);
+                .getDescriptor(ConfluenceSite.class);
 
         if (siteDescriptor != null) {
             this.site = new ConfluenceSite(
-                siteDescriptor.getUsername(),
-                siteDescriptor.getPassword(),
-                siteDescriptor.getUrl(),
-                siteDescriptor.getAuthenticationType(),
-                siteDescriptor.getTimeout(),
-                siteDescriptor.getPoolSize());
+                    siteDescriptor.getUsername(),
+                    siteDescriptor.getPassword(),
+                    siteDescriptor.getUrl(),
+                    siteDescriptor.getAuthenticationType(),
+                    siteDescriptor.getTimeout(),
+                    siteDescriptor.getPoolSize(),
+                    siteDescriptor.getTrustAllCertificates());
         }
     }
 

@@ -1,84 +1,95 @@
 package de.sprengnetter.jenkins.plugins.jenfluence.service;
 
-
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.squareup.okhttp.MediaType;
+import com.squareup.okhttp.Request;
+import com.squareup.okhttp.RequestBody;
+import com.squareup.okhttp.Response;
+import de.sprengnetter.jenkins.plugins.jenfluence.ConfluenceSite;
 import de.sprengnetter.jenkins.plugins.jenfluence.api.Content;
 import de.sprengnetter.jenkins.plugins.jenfluence.api.Page;
 import de.sprengnetter.jenkins.plugins.jenfluence.api.PageCreated;
 
-import javax.ws.rs.*;
-import javax.ws.rs.core.MediaType;
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
 
-/**
- * @author Oliver Breitenbach
- * @version 1.0.0
- * Service interface which defines the available methods related to some kind of content of confluence.
- * This content is usually the data, including metadata, of pages in Confluence.
- */
-@Path(BaseService.BASE_RESOURCE + "/content")
-@Produces(MediaType.APPLICATION_JSON)
-@Consumes(MediaType.APPLICATION_JSON)
-public interface ContentService extends BaseService {
+public final class ContentService extends BaseService {
 
-    /**
-     * Returns the unfiltered content limited by 25 results.
-     *
-     * @return The unfiltered content.
-     */
-    @GET
-    Content getContent();
+    private static final String CONTENT_RESOURCE = "/content";
 
-    /**
-     * Returns the unfiltered content with the specification of the result limit.
-     *
-     * @param limit The max count of returned results.
-     * @return The unfiltered content.
-     */
-    @GET
-    Content getContent(@QueryParam("limit") final Integer limit);
+    private final ObjectMapper objectMapper;
 
-    /**
-     * Returns the content filtered by a Confluence space key limited by 25 results.
-     * The results will all be located in the specified space.
-     *
-     * @param spaceKey The key of the space in Confluence.
-     * @return The found content filtered by a space key.
-     */
-    @GET
-    Content getContent(@QueryParam("spaceKey") final String spaceKey);
+    public ContentService(ConfluenceSite confluenceSite) {
+        super(confluenceSite);
+        this.objectMapper = new ObjectMapper();
+    }
 
-    /**
-     * Returns the content filtered by a Confluence space key.
-     * The results will all be located in the specified space.
-     * Also the result count is specified by the limit.
-     *
-     * @param spaceKey The key of the space in Confluence.
-     * @param limit    The max count of the returned results.
-     * @return The found content filtered by a space key.
-     */
-    @GET
-    Content getContent(@QueryParam("spaceKey") final String spaceKey, @QueryParam("limit") final Integer limit);
+    public Content getContent() throws IOException {
+        Request request = buildGetRequest(CONTENT_RESOURCE);
+        Response response = getClient().newCall(request).execute();
+        return this.objectMapper.readValue(response.body().string(), Content.class);
+    }
 
-    /**
-     * Returns the content filtered by a Confluence space key and a title of a page.
-     *
-     * @param spaceKey The key of the space in Confluence.
-     * @param title    The title of the searched page.
-     * @return The found content filtered by a space key and a page title.
-     */
-    @GET
-    Content getPage(@QueryParam("spaceKey") final String spaceKey, @QueryParam("title") final String title);
+    public Content getContent(Integer limit) throws IOException {
+        Map<String, String> queryParams = Collections.singletonMap("limit", String.valueOf(limit));
+        Request request = buildGetRequest(CONTENT_RESOURCE, queryParams);
+        Response response = getClient().newCall(request).execute();
+        return this.objectMapper.readValue(response.body().string(), Content.class);
+    }
 
-    /**
-     * Creates a page in Confluence.
-     *
-     * @param page The {@link Page} object, which contains information about the page that is going to be created.
-     * @return The mapped response of the Confluence server.
-     */
-    @POST
-    PageCreated createPage(final Page page);
+    public Content getContent(String spaceKey) throws IOException {
+        Map<String, String> queryParams = Collections.singletonMap("spaceKey", spaceKey);
+        Request request = buildGetRequest(CONTENT_RESOURCE, queryParams);
+        Response response = getClient().newCall(request).execute();
+        return this.objectMapper.readValue(response.body().string(), Content.class);
+    }
 
-    @POST
-    @Path("{id}/child/attachment")
-    @Consumes(MediaType.MULTIPART_FORM_DATA)
-    void attachFile(@PathParam("id") final String id);
+    public Content getContent(String spaceKey, Integer limit) throws IOException {
+        HashMap<String, String> queryParams = new HashMap<String, String>() {{
+            put("spaceKey", spaceKey);
+            put("limit", String.valueOf(limit));
+        }};
+        Request request = buildGetRequest(CONTENT_RESOURCE, queryParams);
+        Response response = getClient().newCall(request).execute();
+        return this.objectMapper.readValue(response.body().string(), Content.class);
+    }
+
+    public Content getPage(String spaceKey, String title) throws IOException {
+        HashMap<String, String> queryParams = new HashMap<String, String>() {{
+            put("spaceKey", spaceKey);
+            put("title", title);
+        }};
+        Request request = buildGetRequest(CONTENT_RESOURCE, queryParams);
+        Response response = getClient().newCall(request).execute();
+        return this.objectMapper.readValue(response.body().string(), Content.class);
+    }
+
+    public PageCreated createPage(Page page) throws IOException {
+        RequestBody body = RequestBody.create(MediaType.parse("application/json"),
+                this.objectMapper.writeValueAsString(page));
+        Request request = buildGetRequest(CONTENT_RESOURCE);
+        Request postRequest = request.newBuilder().post(body).build();
+        Response response = getClient().newCall(postRequest).execute();
+        return this.objectMapper.readValue(response.body().string(), PageCreated.class);
+    }
+
+    public String attachFile(String id, String filePath) throws IOException {
+        RequestBody requestBody = buildBodyForFileUpload(filePath, guessMediaType(new File(filePath)));
+        Request request = buildPostRequest(String.format("%s/%s/child/attachment", CONTENT_RESOURCE, id), requestBody);
+        Response response = getClient().newCall(request).execute();
+        return response.body().string();
+    }
+
+    private String guessMediaType(File file) {
+        try {
+            return Files.probeContentType(Paths.get(file.getAbsolutePath()));
+        } catch (IOException e) {
+            return "*/*";
+        }
+    }
 }

@@ -1,17 +1,16 @@
 package de.sprengnetter.jenkins.plugins.jenfluence.step.execution;
 
 import de.sprengnetter.jenkins.plugins.jenfluence.ConfluenceSite;
+import de.sprengnetter.jenkins.plugins.jenfluence.api.Content;
+import de.sprengnetter.jenkins.plugins.jenfluence.service.ContentService;
 import de.sprengnetter.jenkins.plugins.jenfluence.step.AbstractStepExecution;
 import de.sprengnetter.jenkins.plugins.jenfluence.step.descriptor.AttachFileStep;
 import org.jenkinsci.plugins.workflow.steps.StepContext;
 
-public class AttachFileExecution extends AbstractStepExecution<Boolean, AttachFileStep> {
-
-    private final ConfluenceSite confluenceSite;
+public class AttachFileExecution extends AbstractStepExecution<String, AttachFileStep> {
 
     public AttachFileExecution(AttachFileStep step, StepContext context, ConfluenceSite confluenceSite) {
         super(step, context, confluenceSite);
-        this.confluenceSite = confluenceSite;
     }
 
     @Override
@@ -22,7 +21,10 @@ public class AttachFileExecution extends AbstractStepExecution<Boolean, AttachFi
     }
 
     @Override
-    protected Boolean run() throws Exception {
-        return Boolean.FALSE;
+    protected String run() throws Exception {
+        ContentService service = getService(ContentService.class);
+        Content pageContent = service.getPage(getStep().getSpaceKey(), getStep().getTitle());
+        return service.attachFile(String.valueOf(pageContent.getResults().get(0).getId()),
+                getStep().getFilePath());
     }
 }

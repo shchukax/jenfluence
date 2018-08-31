@@ -1,6 +1,5 @@
 package de.sprengnetter.jenkins.plugins.jenfluence.step.execution;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import de.sprengnetter.jenkins.plugins.jenfluence.ConfluenceSite;
 import de.sprengnetter.jenkins.plugins.jenfluence.api.*;
 import de.sprengnetter.jenkins.plugins.jenfluence.service.ContentService;
@@ -10,7 +9,7 @@ import org.jenkinsci.plugins.workflow.steps.StepContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.File;
+import java.io.IOException;
 import java.util.Collections;
 
 /**
@@ -64,7 +63,7 @@ public class CreatePageExecution extends AbstractStepExecution<PageCreated, Crea
         }
     }
 
-    private Page toPage() {
+    private Page toPage() throws IOException {
         Page page = new Page();
         page.setTitle(getStep().getTitle());
         page.setType("page");
@@ -104,7 +103,7 @@ public class CreatePageExecution extends AbstractStepExecution<PageCreated, Crea
         return page;
     }
 
-    private Integer getParentId() {
+    private Integer getParentId() throws IOException {
         ContentService service = getService(ContentService.class);
         Content content = service.getPage(getStep().getSpaceKey(), getStep().getBy().getParentIdentifier());
 
