@@ -8,7 +8,6 @@ import java.io.IOException;
 import java.net.InetSocketAddress;
 import java.net.Socket;
 import java.net.URL;
-import java.security.cert.CertificateException;
 
 /**
  * @author Oliver Breitenbach

@@ -32,19 +32,11 @@ public abstract class BaseService {
         initHeaders();
     }
 
-    BaseService(final ConfluenceSite confluenceSite, final Map<String, String> defaultRequestHeaders) {
-        this.confluenceSite = confluenceSite;
-        this.defaultRequestHeaders = defaultRequestHeaders;
-        this.customRequestHeaders = new HashMap<>();
-        initClient();
-        initHeaders();
-    }
-
-    protected Request buildGetRequest(final String requestResource) {
+    Request buildGetRequest(final String requestResource) {
         return buildGetRequest(requestResource, Collections.emptyMap());
     }
 
-    protected Request buildGetRequest(final String requestResource, final Map<String, String> queryParams) {
+    Request buildGetRequest(final String requestResource, final Map<String, String> queryParams) {
         Request.Builder requestBuilder = new Request.Builder();
         registerAllHeaders(requestBuilder);
         //clear the custom headers for the next upcoming request
@@ -53,16 +45,16 @@ public abstract class BaseService {
         return requestBuilder.build();
     }
 
-    protected Request buildPostRequest(final String requestResource, final RequestBody requestBody) {
+    Request buildPostRequest(final String requestResource, final RequestBody requestBody) {
         Request.Builder requestBuilder = this.buildGetRequest(requestResource).newBuilder();
         return requestBuilder.post(requestBody).build();
     }
 
-    protected RequestBody buildBodyForFileUpload(final String filePath, final String mediaType) {
+    RequestBody buildBodyForFileUpload(final String filePath, final String mediaType) {
         return buildBodyForFileUpload(filePath, mediaType, Collections.emptyList());
     }
 
-    protected RequestBody buildBodyForFileUpload(final String filePath, final String mediaType, final List<MultipartField> additionalMultipartFields) {
+    private RequestBody buildBodyForFileUpload(final String filePath, final String mediaType, final List<MultipartField> additionalMultipartFields) {
         MultipartBuilder multipartBuilder = new MultipartBuilder()
                 .type(MultipartBuilder.FORM)
                 .addFormDataPart("file", filePath, RequestBody.create(MediaType.parse(mediaType), new File(filePath)));
@@ -90,7 +82,7 @@ public abstract class BaseService {
         }
     }
 
-    private void installTrustManager(TrustManager[] allTrustingManager) {
+    private void installTrustManager(final TrustManager[] allTrustingManager) {
         try {
             SSLContext sslContext = SSLContext.getInstance("SSL");
             sslContext.init(null, allTrustingManager, new SecureRandom());
@@ -111,7 +103,7 @@ public abstract class BaseService {
         }
     }
 
-    private void registerAllHeaders(Request.Builder builder) {
+    private void registerAllHeaders(final Request.Builder builder) {
         defaultRequestHeaders.forEach(builder::addHeader);
         customRequestHeaders.forEach(builder::addHeader);
     }
@@ -142,7 +134,10 @@ public abstract class BaseService {
         private String key;
         private String value;
 
-        public MultipartField(String key, String value) {
+        public MultipartField(final String key, final String value) {
+
+
+
             this.key = key;
             this.value = value;
         }

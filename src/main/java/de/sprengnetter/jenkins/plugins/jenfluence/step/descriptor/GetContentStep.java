@@ -29,7 +29,7 @@ public class GetContentStep extends AbstractStep {
     }
 
     @Override
-    public StepExecution start(StepContext context) throws Exception {
+    public StepExecution start(final StepContext context) throws Exception {
         return new GetContentExecution(this, context, getSite());
     }
 

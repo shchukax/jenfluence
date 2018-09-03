@@ -9,19 +9,19 @@ import org.jenkinsci.plugins.workflow.steps.StepContext;
 
 public class AttachFileExecution extends AbstractStepExecution<String, AttachFileStep> {
 
-    public AttachFileExecution(AttachFileStep step, StepContext context, ConfluenceSite confluenceSite) {
+    public AttachFileExecution(final AttachFileStep step, final StepContext context, final ConfluenceSite confluenceSite) {
         super(step, context, confluenceSite);
     }
 
     @Override
-    public void validate(AttachFileStep step) {
+    public void validate(final AttachFileStep step) {
         if (isNull(step)) {
             throw new IllegalStateException("Given step of type \"AttachFileStep\" is null");
         }
     }
 
     @Override
-    protected String run() throws Exception {
+    protected String run() {
         ContentService service = getService(ContentService.class);
         Content pageContent = service.getPage(getStep().getSpaceKey(), getStep().getTitle());
         return service.attachFile(String.valueOf(pageContent.getResults().get(0).getId()),

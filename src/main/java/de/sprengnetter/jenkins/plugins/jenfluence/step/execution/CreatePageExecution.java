@@ -103,7 +103,7 @@ public class CreatePageExecution extends AbstractStepExecution<PageCreated, Crea
         return page;
     }
 
-    private Integer getParentId() throws IOException {
+    private Integer getParentId() {
         ContentService service = getService(ContentService.class);
         Content content = service.getPage(getStep().getSpaceKey(), getStep().getBy().getParentIdentifier());
 

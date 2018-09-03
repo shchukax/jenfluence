@@ -18,7 +18,7 @@ public class AttachFileStep extends AbstractStep {
     private String spaceKey;
 
     @DataBoundConstructor
-    public AttachFileStep(String filePath, String title, String spaceKey) {
+    public AttachFileStep(final String filePath, final String title, final String spaceKey) {
         super();
         this.filePath = filePath;
         this.title = title;
@@ -26,7 +26,7 @@ public class AttachFileStep extends AbstractStep {
     }
 
     @Override
-    public StepExecution start(StepContext context) throws Exception {
+    public StepExecution start(final StepContext context) throws Exception {
         return new AttachFileExecution(this, context, getSite());
     }
 

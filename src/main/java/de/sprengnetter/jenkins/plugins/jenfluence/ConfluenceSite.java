@@ -191,7 +191,7 @@ public class ConfluenceSite extends AbstractDescribableImpl<ConfluenceSite> impl
      *        The max pool size for the connection pool.
      */
     @DataBoundSetter
-    public void setPoolSize(Integer poolSize) {
+    public void setPoolSize(final Integer poolSize) {
         this.poolSize = poolSize;
     }
 
@@ -200,7 +200,7 @@ public class ConfluenceSite extends AbstractDescribableImpl<ConfluenceSite> impl
     }
 
     @DataBoundSetter
-    public void setTrustAllCertificates(boolean trustAllCertificates) {
+    public void setTrustAllCertificates(final boolean trustAllCertificates) {
         this.trustAllCertificates = trustAllCertificates;
     }
 

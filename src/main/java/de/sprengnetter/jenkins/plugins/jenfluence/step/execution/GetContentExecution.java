@@ -38,7 +38,7 @@ public class GetContentExecution extends AbstractStepExecution<Content, GetConte
     }
 
     @Override
-    protected Content run() throws Exception {
+    protected Content run() {
         ContentService service = getService(ContentService.class);
         // Do we have no input?
         if ((getStep().getSpaceKey() == null || getStep().getSpaceKey().isEmpty())

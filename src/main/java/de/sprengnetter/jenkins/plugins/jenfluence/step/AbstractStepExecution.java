@@ -5,8 +5,6 @@ import de.sprengnetter.jenkins.plugins.jenfluence.service.BaseService;
 import de.sprengnetter.jenkins.plugins.jenfluence.service.ContentService;
 import org.jenkinsci.plugins.workflow.steps.StepContext;
 import org.jenkinsci.plugins.workflow.steps.SynchronousNonBlockingStepExecution;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
  * @param <R> The return type of the execution.
@@ -18,8 +16,6 @@ import org.slf4j.LoggerFactory;
 public abstract class AbstractStepExecution<R, T extends AbstractStep> extends SynchronousNonBlockingStepExecution<R> {
 
     private static final long serialVersionUID = 7535652081766832564L;
-
-    private static final transient Logger LOGGER = LoggerFactory.getLogger(AbstractStepExecution.class);
 
     private final transient T step;
 

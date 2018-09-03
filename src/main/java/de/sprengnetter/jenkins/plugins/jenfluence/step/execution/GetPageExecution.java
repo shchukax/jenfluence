@@ -48,7 +48,7 @@ public class GetPageExecution extends AbstractStepExecution<Content, GetPageStep
     }
 
     @Override
-    protected Content run() throws Exception {
+    protected Content run() {
         try {
             return getService(ContentService.class).getPage(getStep().getSpaceKey(), getStep().getTitle());
         } catch (Exception e) {
