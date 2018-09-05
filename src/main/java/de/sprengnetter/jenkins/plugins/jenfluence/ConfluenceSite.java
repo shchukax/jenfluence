@@ -38,7 +38,8 @@ public class ConfluenceSite extends AbstractDescribableImpl<ConfluenceSite> impl
 
     private Integer poolSize;
 
-    private boolean trustAllCertificates;
+    //Will be implemented soon.....
+    private boolean trustAllCertificates = false;
 
     private ConfluenceSiteDescriptor confluenceSiteDescriptor = new ConfluenceSiteDescriptor();
 
@@ -60,14 +61,14 @@ public class ConfluenceSite extends AbstractDescribableImpl<ConfluenceSite> impl
      */
     @DataBoundConstructor
     public ConfluenceSite(final String username, final String password, final URL url, final AuthenticationType authenticationType,
-        final Integer timeout, final Integer poolSize, final boolean trustAllCertificates) {
+        final Integer timeout, final Integer poolSize) {
         this.username = username;
         this.url = url;
         this.password = password;
         this.authenticationType = authenticationType;
         this.timeout = timeout;
         this.poolSize = poolSize;
-        this.trustAllCertificates = trustAllCertificates;
+//        this.trustAllCertificates = trustAllCertificates;
     }
 
     @Override
@@ -245,7 +246,7 @@ public class ConfluenceSite extends AbstractDescribableImpl<ConfluenceSite> impl
             }
             timeout = json.getInt("timeout");
             poolSize = json.getInt("poolSize");
-            trustAllCertificates = json.getBoolean("trustAllCertificates");
+//            trustAllCertificates = json.getBoolean("trustAllCertificates");
             validate(username, password, url, timeout);
             save();
             return super.configure(req, json);

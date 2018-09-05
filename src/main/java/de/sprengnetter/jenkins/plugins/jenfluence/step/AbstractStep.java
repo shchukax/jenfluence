@@ -32,8 +32,7 @@ public abstract class AbstractStep extends Step implements Serializable {
                     siteDescriptor.getUrl(),
                     siteDescriptor.getAuthenticationType(),
                     siteDescriptor.getTimeout(),
-                    siteDescriptor.getPoolSize(),
-                    siteDescriptor.getTrustAllCertificates());
+                    siteDescriptor.getPoolSize());
         }
     }
 
