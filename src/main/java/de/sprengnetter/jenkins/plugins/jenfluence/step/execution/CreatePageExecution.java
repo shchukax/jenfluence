@@ -6,10 +6,7 @@ import de.sprengnetter.jenkins.plugins.jenfluence.service.ContentService;
 import de.sprengnetter.jenkins.plugins.jenfluence.step.AbstractStepExecution;
 import de.sprengnetter.jenkins.plugins.jenfluence.step.descriptor.CreatePageStep;
 import org.jenkinsci.plugins.workflow.steps.StepContext;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
-import java.io.IOException;
 import java.util.Collections;
 
 /**
@@ -54,14 +51,14 @@ public class CreatePageExecution extends AbstractStepExecution<PageCreated, Crea
     @Override
     protected PageCreated run() throws Exception {
         try {
-            return getService(ContentService.class).createPage(toPage());
+            return getService(ContentService.class).createPage(buildNewPage());
         } catch (Exception e) {
             e.printStackTrace();
             throw e;
         }
     }
 
-    private Page toPage() throws IOException {
+    private Page buildNewPage() {
         Page page = new Page();
         page.setTitle(getStep().getTitle());
         page.setType("page");

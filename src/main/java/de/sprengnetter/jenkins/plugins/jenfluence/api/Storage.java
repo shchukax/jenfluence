@@ -3,6 +3,7 @@ package de.sprengnetter.jenkins.plugins.jenfluence.api;
 import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
+
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
@@ -14,6 +15,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  */
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class Storage implements Serializable {
+
+    @JsonIgnore
+    public static final String REPRESENTATION = "storage";
 
     private static final long serialVersionUID = 6166482514595995388L;
 
@@ -54,9 +58,9 @@ public class Storage implements Serializable {
     @Override
     public String toString() {
         return "Storage{" +
-            "value='" + value + '\'' +
-            ", representation='" + representation + '\'' +
-            ", unmappedFields=" + unmappedFields +
-            '}';
+                "value='" + value + '\'' +
+                ", representation='" + representation + '\'' +
+                ", unmappedFields=" + unmappedFields +
+                '}';
     }
 }

@@ -8,6 +8,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.net.ssl.*;
+import javax.ws.rs.HttpMethod;
 import java.io.File;
 import java.security.KeyManagementException;
 import java.security.NoSuchAlgorithmException;
@@ -17,6 +18,12 @@ import java.util.concurrent.TimeUnit;
 
 public abstract class BaseService {
     private static final Logger LOGGER = LoggerFactory.getLogger(BaseService.class);
+
+    private static final String SSL_INSTANCE_TYPE = "SSL";
+    private static final String AUTHORIZATION_HEADER = "Authorization";
+    private static final String CONFLUENCE_HEADER_KEY = "X-Atlassian-Token";
+    private static final String CONFLUENCE_HEADER_VALUE = "no-check";
+    private static final String FILE_UPLOAD_FORM_DATA_NAME = "file";
 
     protected static final String BASE_RESOURCE = "/rest/api";
 
@@ -33,21 +40,19 @@ public abstract class BaseService {
     }
 
     Request buildGetRequest(final String requestResource) {
-        return buildGetRequest(requestResource, Collections.emptyMap());
+        return buildRequest(requestResource, HttpMethod.GET, null, Collections.emptyMap());
     }
 
     Request buildGetRequest(final String requestResource, final Map<String, String> queryParams) {
-        Request.Builder requestBuilder = new Request.Builder();
-        registerAllHeaders(requestBuilder);
-        //clear the custom headers for the next upcoming request
-        this.customRequestHeaders.clear();
-        requestBuilder.url(buildUrl(confluenceSite.getUrl() + BASE_RESOURCE + requestResource, queryParams));
-        return requestBuilder.build();
+        return buildRequest(requestResource, HttpMethod.GET, null, queryParams);
     }
 
     Request buildPostRequest(final String requestResource, final RequestBody requestBody) {
-        Request.Builder requestBuilder = this.buildGetRequest(requestResource).newBuilder();
-        return requestBuilder.post(requestBody).build();
+        return buildRequest(requestResource, HttpMethod.POST, requestBody, Collections.emptyMap());
+    }
+
+    Request buildPutRequest(final String requestResource, final RequestBody requestBody) {
+        return buildRequest(requestResource, HttpMethod.PUT, requestBody, Collections.emptyMap());
     }
 
     RequestBody buildBodyForFileUpload(final String filePath, final String mediaType) {
@@ -57,7 +62,7 @@ public abstract class BaseService {
     private RequestBody buildBodyForFileUpload(final String filePath, final String mediaType, final List<MultipartField> additionalMultipartFields) {
         MultipartBuilder multipartBuilder = new MultipartBuilder()
                 .type(MultipartBuilder.FORM)
-                .addFormDataPart("file", filePath, RequestBody.create(MediaType.parse(mediaType), new File(filePath)));
+                .addFormDataPart(FILE_UPLOAD_FORM_DATA_NAME, filePath, RequestBody.create(MediaType.parse(mediaType), new File(filePath)));
 
         if (additionalMultipartFields != null && additionalMultipartFields.isEmpty()) {
             additionalMultipartFields.forEach(field -> multipartBuilder.addFormDataPart(
@@ -65,8 +70,17 @@ public abstract class BaseService {
                     field.getValue())
             );
         }
-
         return multipartBuilder.build();
+    }
+
+    private Request buildRequest(final String requestResource, final String httpMethod, final RequestBody requestBody, final Map<String, String> queryParams) {
+        Request.Builder requestBuilder = new Request.Builder();
+        registerAllHeaders(requestBuilder);
+        //clear the custom headers for the next upcoming request
+        this.customRequestHeaders.clear();
+        requestBuilder.url(buildUrl(confluenceSite.getUrl() + BASE_RESOURCE + requestResource, queryParams));
+        requestBuilder.method(httpMethod, requestBody);
+        return requestBuilder.build();
     }
 
     private void initClient() {
@@ -84,7 +98,7 @@ public abstract class BaseService {
 
     private void installTrustManager(final TrustManager[] allTrustingManager) {
         try {
-            SSLContext sslContext = SSLContext.getInstance("SSL");
+            SSLContext sslContext = SSLContext.getInstance(SSL_INSTANCE_TYPE);
             sslContext.init(null, allTrustingManager, new SecureRandom());
             SSLSocketFactory sslSocketFactory = sslContext.getSocketFactory();
             this.client.setSocketFactory(sslSocketFactory);
@@ -97,9 +111,9 @@ public abstract class BaseService {
 
     private void initHeaders() {
         this.defaultRequestHeaders = new HashMap<>();
-        this.defaultRequestHeaders.put("X-Atlassian-Token", "no-check");
+        this.defaultRequestHeaders.put(CONFLUENCE_HEADER_KEY, CONFLUENCE_HEADER_VALUE);
         if (confluenceSite.getAuthenticationType() == AuthenticationType.BASIC) {
-            this.defaultRequestHeaders.put("Authorization", Credentials.basic(confluenceSite.getUserName(), confluenceSite.getPassword()));
+            this.defaultRequestHeaders.put(AUTHORIZATION_HEADER, Credentials.basic(confluenceSite.getUserName(), confluenceSite.getPassword()));
         }
     }
 

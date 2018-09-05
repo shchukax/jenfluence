@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.fasterxml.jackson.annotation.JsonAnySetter;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -15,6 +16,11 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  */
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class Page implements Serializable {
+
+    @JsonIgnore
+    public static final String TYPE = "page";
+    @JsonIgnore
+    public static final String STATUS = "current";
 
     private static final long serialVersionUID = 2988711873193354989L;
 
@@ -119,10 +125,6 @@ public class Page implements Serializable {
     @JsonAnySetter
     public void setUnmappedFields(String name, Object o) {
         this.unmappedFields.put(name, o);
-    }
-
-    public void clearUnmappedFields() {
-        this.unmappedFields = null;
     }
 
     @Override

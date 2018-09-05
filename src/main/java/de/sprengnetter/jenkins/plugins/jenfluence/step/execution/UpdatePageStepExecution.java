@@ -33,50 +33,41 @@ public class UpdatePageStepExecution extends AbstractStepExecution<PageCreated, 
     }
 
     @Override
-    protected PageCreated run() throws Exception {
+    protected PageCreated run() {
         try {
-            return getService(ContentService.class).updatePage(createUpdatedPage());
+            return getService(ContentService.class).updatePage(buildUpdatedPage());
         } catch (Exception e) {
             e.printStackTrace();
             throw e;
         }
     }
 
-    private Page createUpdatedPage() {
+    private Page buildUpdatedPage() {
+        //Get information about the page to update
         String pageId = extractPageId(getStep().getTitle());
         Page oldPage = requestOldPageInformation(pageId);
-        Page newPage = new Page();
 
+        //Set page base information
+        Page newPage = new Page();
         newPage.setTitle(getStep().getTitle());
-        newPage.setType("page");
-        newPage.setStatus("current");
+        newPage.setType(Page.TYPE);
+        newPage.setStatus(Page.STATUS);
         newPage.setId(pageId);
 
+        //Get the new Version number and increase it by 1
         Version version = new Version();
         version.setNumber(oldPage.getVersion().getNumber() + 1);
         newPage.setVersion(version);
 
+        //Set the space information
         Space space = new Space();
         space.setKey(oldPage.getSpace().getKey());
         newPage.setSpace(space);
 
+        //Set the new content for the page
         Body body = new Body();
-        Storage storage = new Storage();
-
-        if (!getStep().isAppend()) {
-            storage.setValue(getStep().getNewContent());
-        } else {
-            oldPage = requestOldPageContent(pageId);
-            storage.setValue(
-                    oldPage.getBody().getStorage().getValue()
-                            + getStep().getNewContent()
-            );
-        }
-        storage.setRepresentation("storage");
-
-        body.setStorage(storage);
+        body.setStorage(buildUpdatedPageStorage(pageId));
         newPage.setBody(body);
-        newPage.clearUnmappedFields();
 
         return newPage;
     }
@@ -93,7 +84,6 @@ public class UpdatePageStepExecution extends AbstractStepExecution<PageCreated, 
         } else if (resultList.size() > 1) {
             throw new IllegalStateException(String.format("Multiple pages with title \"%s\" found", title));
         }
-
         return String.valueOf(resultList.get(0).getId());
     }
 
@@ -105,5 +95,20 @@ public class UpdatePageStepExecution extends AbstractStepExecution<PageCreated, 
     private Page requestOldPageInformation(final String id) {
         ContentService service = getService(ContentService.class);
         return service.getPageById(id);
+    }
+
+    private Storage buildUpdatedPageStorage(final String pageId) {
+        Storage storage = new Storage();
+        if (!getStep().isAppend()) {
+            storage.setValue(getStep().getNewContent());
+        } else {
+            Page oldPage = requestOldPageContent(pageId);
+            storage.setValue(
+                    oldPage.getBody().getStorage().getValue()
+                            + getStep().getNewContent()
+            );
+        }
+        storage.setRepresentation(Storage.REPRESENTATION);
+        return storage;
     }
 }

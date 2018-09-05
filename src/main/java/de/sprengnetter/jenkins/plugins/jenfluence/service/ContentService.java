@@ -1,8 +1,8 @@
 package de.sprengnetter.jenkins.plugins.jenfluence.service;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.squareup.okhttp.MediaType;
 import com.squareup.okhttp.Request;
 import com.squareup.okhttp.RequestBody;
 import com.squareup.okhttp.Response;
@@ -13,6 +13,8 @@ import de.sprengnetter.jenkins.plugins.jenfluence.api.PageCreated;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import javax.ws.rs.HttpMethod;
+import javax.ws.rs.core.MediaType;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
@@ -26,12 +28,21 @@ public final class ContentService extends BaseService {
     private static final Logger LOGGER = LoggerFactory.getLogger(ContentService.class);
 
     private static final String CONTENT_RESOURCE = "/content";
+    private static final String ATTACHMENT_RESOURCE_TEMPLATE = "%s/%s/child/attachment";
+    private static final String EXPAND_BODY_TEMPLATE = "/%s?expand=body.storage";
+
+    private static final String SPACE_KEY_QUERY_PARAM = "spaceKey";
+    private static final String LIMIT_KEY_QUERY_PARAM = "limit";
+    private static final String TITLE_KEY_QUERY_PARAM = "title";
 
     private final ObjectMapper objectMapper;
 
     public ContentService(final ConfluenceSite confluenceSite) {
         super(confluenceSite);
         this.objectMapper = new ObjectMapper();
+        //Don't serialize null or empty fields
+        this.objectMapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);
+        this.objectMapper.setSerializationInclusion(JsonInclude.Include.NON_EMPTY);
     }
 
     public Content getContent() {
@@ -40,21 +51,21 @@ public final class ContentService extends BaseService {
     }
 
     public Content getContent(final Integer limit) {
-        Map<String, String> queryParams = Collections.singletonMap("limit", String.valueOf(limit));
+        Map<String, String> queryParams = Collections.singletonMap(LIMIT_KEY_QUERY_PARAM, String.valueOf(limit));
         Request request = buildGetRequest(CONTENT_RESOURCE, queryParams);
         return executeRequest(request, Content.class);
     }
 
     public Content getContent(final String spaceKey) {
-        Map<String, String> queryParams = Collections.singletonMap("spaceKey", spaceKey);
+        Map<String, String> queryParams = Collections.singletonMap(SPACE_KEY_QUERY_PARAM, spaceKey);
         Request request = buildGetRequest(CONTENT_RESOURCE, queryParams);
         return executeRequest(request, Content.class);
     }
 
     public Content getContent(final String spaceKey, final Integer limit) {
         HashMap<String, String> queryParams = new HashMap<String, String>() {{
-            put("spaceKey", spaceKey);
-            put("limit", String.valueOf(limit));
+            put(SPACE_KEY_QUERY_PARAM, spaceKey);
+            put(LIMIT_KEY_QUERY_PARAM, String.valueOf(limit));
         }};
         Request request = buildGetRequest(CONTENT_RESOURCE, queryParams);
         return executeRequest(request, Content.class);
@@ -62,8 +73,8 @@ public final class ContentService extends BaseService {
 
     public Content getPage(final String spaceKey, final String title) {
         HashMap<String, String> queryParams = new HashMap<String, String>() {{
-            put("spaceKey", spaceKey);
-            put("title", title);
+            put(SPACE_KEY_QUERY_PARAM, spaceKey);
+            put(TITLE_KEY_QUERY_PARAM, title);
         }};
         Request request = buildGetRequest(CONTENT_RESOURCE, queryParams);
         return executeRequest(request, Content.class);
@@ -75,7 +86,7 @@ public final class ContentService extends BaseService {
     }
 
     public Page getPageBodyById(final String id) {
-        Request request = buildGetRequest(String.format(CONTENT_RESOURCE + "/%s?expand=body.storage", id));
+        Request request = buildGetRequest(String.format(CONTENT_RESOURCE + EXPAND_BODY_TEMPLATE, id));
         return executeRequest(request, Page.class);
     }
 
@@ -89,7 +100,7 @@ public final class ContentService extends BaseService {
 
     public String attachFile(final String id, final String filePath) {
         RequestBody requestBody = buildBodyForFileUpload(filePath, guessMediaType(new File(filePath)));
-        Request request = buildPostRequest(String.format("%s/%s/child/attachment", CONTENT_RESOURCE, id), requestBody);
+        Request request = buildPostRequest(String.format(ATTACHMENT_RESOURCE_TEMPLATE, CONTENT_RESOURCE, id), requestBody);
         return executeRequest(request, String.class);
     }
 
@@ -101,13 +112,20 @@ public final class ContentService extends BaseService {
         }
     }
 
-    private PageCreated modifyPage(final Page page, final HttpMethod method) {
+    private PageCreated modifyPage(final Page page, final String httpMethod) {
         try {
-            RequestBody body = RequestBody.create(MediaType.parse("application/json"),
+            RequestBody body = RequestBody.create(com.squareup.okhttp.MediaType.parse(MediaType.APPLICATION_JSON),
                     this.objectMapper.writeValueAsString(page));
-            Request request = buildGetRequest(String.format(CONTENT_RESOURCE + "/%s", page.getId()));
-            Request requestToExecute = request.newBuilder().method(method.getMethodName(), body).build();
-            return executeRequest(requestToExecute, PageCreated.class);
+            Request request;
+            //Build request based on the HTTP-Method
+            if (HttpMethod.POST.equals(httpMethod)) {
+                request = buildPostRequest(CONTENT_RESOURCE, body);
+            } else if (HttpMethod.PUT.equals(httpMethod)) {
+                request = buildPutRequest(CONTENT_RESOURCE + "/" + page.getId(), body);
+            } else {
+                throw new IllegalArgumentException(String.format("HTTP-Method %s is not allowed for modifying pages", httpMethod));
+            }
+            return executeRequest(request, PageCreated.class);
         } catch (JsonProcessingException e) {
             LOGGER.error("Error while processing JSON-File", e);
             throw new IllegalArgumentException(e);
@@ -124,22 +142,6 @@ public final class ContentService extends BaseService {
         } catch (IOException e) {
             LOGGER.error("Error while executing request " + request.toString(), e);
             throw new IllegalArgumentException(e);
-        }
-    }
-
-    protected enum HttpMethod {
-        GET("GET"),
-        POST("POST"),
-        PUT("PUT");
-
-        private final String method;
-
-        HttpMethod(String method) {
-            this.method = method;
-        }
-
-        public String getMethodName() {
-            return method;
         }
     }
 }
