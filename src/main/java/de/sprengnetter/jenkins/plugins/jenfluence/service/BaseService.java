@@ -108,7 +108,6 @@ public abstract class BaseService {
         customRequestHeaders.forEach(builder::addHeader);
     }
 
-
     private void addQueryParams(final HttpUrl.Builder urlBuilder, final Map<String, String> queryParams) {
         if (queryParams != null && !queryParams.isEmpty()) {
             queryParams.forEach(urlBuilder::addQueryParameter);
@@ -135,9 +134,6 @@ public abstract class BaseService {
         private String value;
 
         public MultipartField(final String key, final String value) {
-
-
-
             this.key = key;
             this.value = value;
         }

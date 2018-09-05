@@ -69,17 +69,22 @@ public final class ContentService extends BaseService {
         return executeRequest(request, Content.class);
     }
 
+    public Page getPageById(final String id) {
+        Request request = buildGetRequest(String.format(CONTENT_RESOURCE + "/%s", id));
+        return executeRequest(request, Page.class);
+    }
+
+    public Page getPageBodyById(final String id) {
+        Request request = buildGetRequest(String.format(CONTENT_RESOURCE + "/%s?expand=body.storage", id));
+        return executeRequest(request, Page.class);
+    }
+
     public PageCreated createPage(final Page page) {
-        try {
-            RequestBody body = RequestBody.create(MediaType.parse("application/json"),
-                    this.objectMapper.writeValueAsString(page));
-            Request request = buildGetRequest(CONTENT_RESOURCE);
-            Request postRequest = request.newBuilder().post(body).build();
-            return executeRequest(postRequest, PageCreated.class);
-        } catch (JsonProcessingException e) {
-            LOGGER.error("Error while processing JSON-File", e);
-            throw new IllegalArgumentException(e);
-        }
+        return modifyPage(page, HttpMethod.POST);
+    }
+
+    public PageCreated updatePage(final Page page) {
+        return modifyPage(page, HttpMethod.PUT);
     }
 
     public String attachFile(final String id, final String filePath) {
@@ -96,7 +101,20 @@ public final class ContentService extends BaseService {
         }
     }
 
-    private <T> T executeRequest(final Request request, Class<T> responseType) {
+    private PageCreated modifyPage(final Page page, final HttpMethod method) {
+        try {
+            RequestBody body = RequestBody.create(MediaType.parse("application/json"),
+                    this.objectMapper.writeValueAsString(page));
+            Request request = buildGetRequest(String.format(CONTENT_RESOURCE + "/%s", page.getId()));
+            Request requestToExecute = request.newBuilder().method(method.getMethodName(), body).build();
+            return executeRequest(requestToExecute, PageCreated.class);
+        } catch (JsonProcessingException e) {
+            LOGGER.error("Error while processing JSON-File", e);
+            throw new IllegalArgumentException(e);
+        }
+    }
+
+    private <T> T executeRequest(final Request request, final Class<T> responseType) {
         try {
             Response response = getClient().newCall(request).execute();
             if (String.class.getSimpleName().equals(responseType.getSimpleName())) {
@@ -106,6 +124,22 @@ public final class ContentService extends BaseService {
         } catch (IOException e) {
             LOGGER.error("Error while executing request " + request.toString(), e);
             throw new IllegalArgumentException(e);
+        }
+    }
+
+    protected enum HttpMethod {
+        GET("GET"),
+        POST("POST"),
+        PUT("PUT");
+
+        private final String method;
+
+        HttpMethod(String method) {
+            this.method = method;
+        }
+
+        public String getMethodName() {
+            return method;
         }
     }
 }

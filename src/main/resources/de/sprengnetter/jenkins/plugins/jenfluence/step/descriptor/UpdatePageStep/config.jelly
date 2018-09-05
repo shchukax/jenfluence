@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?jelly escape-by-default='true'?>
+<j:jelly
+        xmlns:j="jelly:core"
+        xmlns:st="jelly:stapler"
+        xmlns:d="jelly:define"
+        xmlns:l="/lib/layout"
+        xmlns:t="/lib/hudson"
+        xmlns:f="/lib/form"
+        xmlns:i="jelly:fmt">
+
+    <f:section title="General">
+        <f:entry field="title" title="Page title" description="The title of the created page">
+            <f:textbox/>
+        </f:entry>
+    </f:section>
+
+    <f:entry description="Append to existing page/Override existing content">
+        <f:checkbox name="append" checked="false" title="Append new Content to page"
+                    default="false">
+        </f:checkbox>
+    </f:entry>
+
+    <f:section title="Content">
+        <f:block>
+            <p>Type the new content of the page in the textbox below. It is also possible to pass HTML code if you want
+                to
+                format your content.
+            </p>
+        </f:block>
+        <f:entry field="newContent" title="Page content" description="The content of the created page">
+            <f:textbox/>
+        </f:entry>
+    </f:section>
+
+</j:jelly>

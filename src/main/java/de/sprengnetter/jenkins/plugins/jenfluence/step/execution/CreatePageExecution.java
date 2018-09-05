@@ -21,8 +21,6 @@ public class CreatePageExecution extends AbstractStepExecution<PageCreated, Crea
 
     private static final long serialVersionUID = 7220386183041962984L;
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(CreatePageExecution.class);
-
     /**
      * Constructor that takes the needed information for the execution of the step.
      *
@@ -45,7 +43,7 @@ public class CreatePageExecution extends AbstractStepExecution<PageCreated, Crea
         }
 
         if (step.getTitle() == null || step.getTitle().isEmpty()) {
-            throw new IllegalStateException("The title of the page is null or emtpy");
+            throw new IllegalStateException("The title of the page is null or empty");
         }
 
         if (step.getSpaceKey() == null || step.getSpaceKey().isEmpty()) {
