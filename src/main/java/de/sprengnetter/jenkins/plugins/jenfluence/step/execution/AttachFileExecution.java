@@ -23,7 +23,7 @@ public class AttachFileExecution extends AbstractStepExecution<String, AttachFil
     @Override
     protected String run() {
         ContentService service = getService(ContentService.class);
-        Content pageContent = service.getPage(getStep().getSpaceKey(), getStep().getTitle());
+        Content pageContent = service.getPage(getStep().getSpaceKey(), getStep().getTitle(), null);
         return service.attachFile(String.valueOf(pageContent.getResults().get(0).getId()),
                 getStep().getFilePath());
     }

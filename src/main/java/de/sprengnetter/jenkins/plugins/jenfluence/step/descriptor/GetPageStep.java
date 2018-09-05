@@ -22,6 +22,8 @@ public class GetPageStep extends AbstractStep {
 
     private String title;
 
+    private String expand;
+
     /**
      * Constructor that takes the information about the searched page.
      *
@@ -29,11 +31,14 @@ public class GetPageStep extends AbstractStep {
      *        The key of the space where the searched page is located in.
      * @param title
      *        The title of the searched page.
+     * @param expand
+     *        Fields to expand in search results, comma-separated
      */
     @DataBoundConstructor
-    public GetPageStep(final String spaceKey, final String title) {
+    public GetPageStep(final String spaceKey, final String title, final String expand) {
         this.spaceKey = spaceKey;
         this.title = title;
+        this.expand = expand;
     }
 
     @Override
@@ -59,13 +64,22 @@ public class GetPageStep extends AbstractStep {
         return title;
     }
 
+    /**
+     * Returns the comma-separated list of fields to expand in search results
+     *
+     * @return Comma-separate list of expand fields
+     */
+    public String getExpand() {
+        return expand;
+    }
+
     @Extension
     public static class Descriptor extends AbstractStepDescriptor {
 
         @Nonnull
         @Override
         public String getDisplayName() {
-            return "Returns all information about a page";
+            return "Returns information about a page";
         }
 
         @Override

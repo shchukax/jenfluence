@@ -34,6 +34,8 @@ public final class ContentService extends BaseService {
     private static final String SPACE_KEY_QUERY_PARAM = "spaceKey";
     private static final String LIMIT_KEY_QUERY_PARAM = "limit";
     private static final String TITLE_KEY_QUERY_PARAM = "title";
+    private static final String EXPAND_KEY_QUERY_PARAM = "expand";
+    private static final String EXPAND_QUERY_PARAM_VALUE = "version";
 
     private final ObjectMapper objectMapper;
 
@@ -71,11 +73,14 @@ public final class ContentService extends BaseService {
         return executeRequest(request, Content.class);
     }
 
-    public Content getPage(final String spaceKey, final String title) {
+    public Content getPage(final String spaceKey, final String title, final String expand) {
         HashMap<String, String> queryParams = new HashMap<String, String>() {{
             put(SPACE_KEY_QUERY_PARAM, spaceKey);
             put(TITLE_KEY_QUERY_PARAM, title);
         }};
+        if (expand != null) {
+            queryParams.put(EXPAND_KEY_QUERY_PARAM, expand);
+        }
         Request request = buildGetRequest(CONTENT_RESOURCE, queryParams);
         return executeRequest(request, Content.class);
     }

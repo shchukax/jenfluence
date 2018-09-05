@@ -100,7 +100,7 @@ public class CreatePageExecution extends AbstractStepExecution<PageCreated, Crea
 
     private Integer getParentId() {
         ContentService service = getService(ContentService.class);
-        Content content = service.getPage(getStep().getSpaceKey(), getStep().getBy().getParentIdentifier());
+        Content content = service.getPage(getStep().getSpaceKey(), getStep().getBy().getParentIdentifier(), null);
 
         if (content.getResults().get(0).getId() == null || content.getResults().size() == 0) {
             throw new IllegalStateException("No parent page with name " + getStep().getBy().getParentIdentifier() + " in space with key "
