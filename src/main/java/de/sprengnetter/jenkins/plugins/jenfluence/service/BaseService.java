@@ -143,7 +143,7 @@ public abstract class BaseService {
         return client;
     }
 
-    protected final class MultipartField {
+    protected static final class MultipartField {
         private String key;
         private String value;
 

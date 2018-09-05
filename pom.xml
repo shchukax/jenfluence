@@ -82,6 +82,7 @@
         <java.test.level>8</java.test.level>
         <jenkins.version>2.135</jenkins.version>
         <pipeline.version>2.5</pipeline.version>
+        <command.launhcer.version>1.2</command.launhcer.version>
         <workflow.step.api.version>2.12</workflow.step.api.version>
         <jenkins-test-harness.version>2.23</jenkins-test-harness.version>
         <scm.api.version>2.2.0</scm.api.version>
@@ -116,6 +117,12 @@
             <groupId>javax.ws.rs</groupId>
             <artifactId>javax.ws.rs-api</artifactId>
             <version>${jaxrs.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.jenkins-ci.plugins</groupId>
+            <artifactId>command-launcher</artifactId>
+            <version>${command.launhcer.version}</version>
         </dependency>
 
         <!--Jackson -->

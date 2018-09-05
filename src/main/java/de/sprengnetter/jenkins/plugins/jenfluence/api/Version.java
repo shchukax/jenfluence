@@ -1,5 +1,6 @@
 package de.sprengnetter.jenkins.plugins.jenfluence.api;
 
+import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
@@ -12,7 +13,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  * @version 1.0.0
  */
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class Version {
+public class Version implements Serializable {
 
     @JsonProperty("by")
     private By by;
