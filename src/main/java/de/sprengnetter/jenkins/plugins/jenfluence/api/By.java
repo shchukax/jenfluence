@@ -15,6 +15,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class By implements Serializable {
 
+    private static final long serialVersionUID = 4246867143258684246L;
+
     @JsonProperty("type")
     private String type;
 
@@ -26,6 +28,7 @@ public class By implements Serializable {
 
     @JsonProperty("userKey")
     private String userKey;
+
 
     @JsonIgnore
     private Map<String, Object> unmappedFields = new HashMap<>();

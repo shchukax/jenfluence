@@ -1,5 +1,6 @@
 package de.sprengnetter.jenkins.plugins.jenfluence.api;
 
+import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
@@ -12,7 +13,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  * @version 1.0.0
  */
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class History {
+public class History implements Serializable {
+
+    private static final long serialVersionUID = 9208002546846774437L;
 
     @JsonProperty("latest")
     private boolean latest;

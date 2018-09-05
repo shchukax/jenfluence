@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -13,7 +14,9 @@ import java.util.Map;
  * @version 1.0.0
  */
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class Container {
+public class Container implements Serializable {
+
+    private static final long serialVersionUID = 4265023925756713744L;
 
     @JsonProperty("id")
     private Integer id;
