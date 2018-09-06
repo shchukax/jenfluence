@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?jelly escape-by-default='true'?>
+<j:jelly
+        xmlns:j="jelly:core"
+        xmlns:st="jelly:stapler"
+        xmlns:d="jelly:define"
+        xmlns:l="/lib/layout"
+        xmlns:t="/lib/hudson"
+        xmlns:f="/lib/form"
+        xmlns:i="jelly:fmt">
+
+    <f:section title="General">
+        <f:entry field="spaceKey" title="Space key" description="The key of the space in which the page is located">
+            <f:textbox/>
+        </f:entry>
+
+        <f:entry field="title" title="Page title" description="The title of the page to search for">
+            <f:textbox/>
+        </f:entry>
+
+        <f:advanced title="Advanced">
+            <f:entry field="expand" title="Expand" description="Additional fields to expand (optional)">
+                <f:textarea/>
+            </f:entry>
+        </f:advanced>
+    </f:section>
+
+</j:jelly>

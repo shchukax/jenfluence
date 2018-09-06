@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?jelly escape-by-default='true'?>
+<j:jelly
+        xmlns:j="jelly:core"
+        xmlns:st="jelly:stapler"
+        xmlns:d="jelly:define"
+        xmlns:l="/lib/layout"
+        xmlns:t="/lib/hudson"
+        xmlns:f="/lib/form"
+        xmlns:i="jelly:fmt">
+
+    <f:section title="General">
+        <f:entry field="spaceKey" title="Space key" description="The key of the space in which the page will be created">
+            <f:textbox/>
+        </f:entry>
+
+        <f:entry field="title" title="Page title" description="The title of the created page">
+            <f:textbox/>
+        </f:entry>
+    </f:section>
+
+    <f:advanced title="Parent page">
+        <f:entry name="value" title="Type of parent identifier" field="value">
+            <select name="value">
+                <option value="NONE">No parent</option>
+                <option value="ID">Identified by page ID</option>
+                <option value="TITLE">Identified by page title</option>
+            </select>
+        </f:entry>
+
+        <f:entry field="parentIdentifier" title="Parent identifier" description="Identifier of the parent page">
+            <f:textbox/>
+        </f:entry>
+    </f:advanced>
+
+    <f:section title="Content">
+        <f:block>
+            <p>Type the new content of the page in the textbox below. It is also possible to pass HTML code if you want
+                to
+                format your content.
+            </p>
+        </f:block>
+        <f:entry field="content" title="Page content" description="The content of the created page">
+            <f:textbox/>
+        </f:entry>
+    </f:section>
+
+</j:jelly>

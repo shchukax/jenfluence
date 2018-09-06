@@ -10,12 +10,12 @@
         xmlns:i="jelly:fmt">
 
     <f:section title="General">
-        <f:entry field="title" title="Page title" description="The title of the created page">
+        <f:entry field="title" title="Page title" description="The new title of the page">
             <f:textbox/>
         </f:entry>
     </f:section>
 
-    <f:entry description="Append to existing page/Override existing content">
+    <f:entry field="append" description="Append to existing page/Override existing content">
         <f:checkbox name="append" checked="false" title="Append new Content to page"
                     default="false">
         </f:checkbox>
@@ -29,7 +29,7 @@
             </p>
         </f:block>
         <f:entry field="newContent" title="Page content" description="The content of the created page">
-            <f:textbox/>
+            <f:textarea/>
         </f:entry>
     </f:section>
 

@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?jelly escape-by-default='true'?>
+<j:jelly
+        xmlns:j="jelly:core"
+        xmlns:st="jelly:stapler"
+        xmlns:d="jelly:define"
+        xmlns:l="/lib/layout"
+        xmlns:t="/lib/hudson"
+        xmlns:f="/lib/form"
+        xmlns:i="jelly:fmt">
+
+    <f:section title="General">
+        <f:entry field="spaceKey" title="Space key" description="The key of the space to query (optional)">
+            <f:textbox/>
+        </f:entry>
+
+        <f:entry field="limit" title="Limit" description="Max number of space to query if space key is not specified">
+            <f:textbox/>
+        </f:entry>
+    </f:section>
+
+</j:jelly>
