@@ -10,22 +10,30 @@
         xmlns:i="jelly:fmt">
 
     <f:section title="General">
-        <f:entry field="title" title="Page title" description="The new title of the page">
+        <f:entry field="spaceKey" title="Space key" description="The key of the space in which the page is located">
             <f:textbox/>
+        </f:entry>
+
+        <f:entry field="title" title="Page title" description="Current title of the page">
+            <f:textbox/>
+        </f:entry>
+
+        <f:entry field="append" description="Append to existing page/Override existing content">
+            <f:checkbox name="append" checked="false" title="Append new Content to page"
+                        default="false">
+            </f:checkbox>
         </f:entry>
     </f:section>
 
-    <f:entry field="append" description="Append to existing page/Override existing content">
-        <f:checkbox name="append" checked="false" title="Append new Content to page"
-                    default="false">
-        </f:checkbox>
-    </f:entry>
-
     <f:section title="Content">
+        <f:entry field="newTitle" title="New page title" description="The new title of the page">
+            <f:textbox/>
+        </f:entry>
+
         <f:block>
-            <p>Type the new content of the page in the textbox below. It is also possible to pass HTML code if you want
-                to
-                format your content.
+            <p>
+                Type the new content of the page in the textbox below. It is also possible to pass HTML code if you want
+                to format your content.
             </p>
         </f:block>
         <f:entry field="newContent" title="Page content" description="The content of the created page">

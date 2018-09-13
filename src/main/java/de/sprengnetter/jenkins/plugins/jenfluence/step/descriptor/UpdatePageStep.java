@@ -13,14 +13,18 @@ import javax.annotation.Nonnull;
 public class UpdatePageStep extends AbstractStep {
     private static final long serialVersionUID = -7249517566943303127L;
 
+    private String spaceKey;
     private String title;
+    private String newTitle;
     private String newContent;
     private boolean append;
 
     @DataBoundConstructor
-    public UpdatePageStep(String title, String newContent, boolean append) {
+    public UpdatePageStep(String spaceKey, String title, String newTitle, String newContent, boolean append) {
         super();
+        this.spaceKey = spaceKey;
         this.title = title;
+        this.newTitle = newTitle;
         this.newContent = newContent;
         this.append = append;
     }
@@ -30,8 +34,16 @@ public class UpdatePageStep extends AbstractStep {
         return new UpdatePageStepExecution(this, context, getSite());
     }
 
+    public String getSpaceKey() {
+        return spaceKey;
+    }
+
     public String getTitle() {
         return title;
+    }
+
+    public String getNewTitle() {
+        return newTitle;
     }
 
     public String getNewContent() {

@@ -7,9 +7,6 @@ import de.sprengnetter.jenkins.plugins.jenfluence.step.AbstractStepExecution;
 import de.sprengnetter.jenkins.plugins.jenfluence.step.descriptor.UpdatePageStep;
 import org.jenkinsci.plugins.workflow.steps.StepContext;
 
-import java.util.List;
-import java.util.stream.Collectors;
-
 public class UpdatePageStepExecution extends AbstractStepExecution<PageCreated, UpdatePageStep> {
     private static final long serialVersionUID = 6330386183041962984L;
 
@@ -25,6 +22,10 @@ public class UpdatePageStepExecution extends AbstractStepExecution<PageCreated, 
 
         if (step.getSite() == null) {
             throw new IllegalStateException("Given site is null");
+        }
+
+        if (step.getSpaceKey() == null || step.getSpaceKey().isEmpty()) {
+            throw new IllegalStateException("The title of the page is null or empty");
         }
 
         if (step.getTitle() == null || step.getTitle().isEmpty()) {
@@ -44,15 +45,18 @@ public class UpdatePageStepExecution extends AbstractStepExecution<PageCreated, 
 
     private Page buildUpdatedPage() {
         //Get information about the page to update
-        String pageId = extractPageId(getStep().getTitle());
+        String pageId = extractPageId(getStep().getSpaceKey(), getStep().getTitle());
         Page oldPage = requestOldPageInformation(pageId);
 
         //Set page base information
         Page newPage = new Page();
-        newPage.setTitle(getStep().getTitle());
+
         newPage.setType(Page.TYPE);
         newPage.setStatus(Page.STATUS);
         newPage.setId(pageId);
+
+        String newTitle = getStep().getNewTitle();
+        newPage.setTitle(newTitle == null || newTitle.trim().length() == 0 ? getStep().getTitle() : newTitle);
 
         //Get the new Version number and increase it by 1
         Version version = new Version();
@@ -72,19 +76,26 @@ public class UpdatePageStepExecution extends AbstractStepExecution<PageCreated, 
         return newPage;
     }
 
-    private String extractPageId(final String title) {
+    private String extractPageId(final String spaceKey, final String title) {
         ContentService service = getService(ContentService.class);
-        Content content = service.getContent();
-        List<Result> resultList = content.getResults().stream()
-                .filter(s -> title.equals(s.getTitle()))
-                .collect(Collectors.toList());
+        Content content = service.getPage(spaceKey, title, null);
 
-        if (resultList.isEmpty()) {
-            throw new IllegalStateException(String.format("No page with title \"%s\" found", title));
-        } else if (resultList.size() > 1) {
-            throw new IllegalStateException(String.format("Multiple pages with title \"%s\" found", title));
+        if (content.getResults().size() == 0 || content.getResults().get(0).getId() == null) {
+            throw new IllegalStateException("No page with title " + getStep().getTitle() + " in space with key "
+                    + getStep().getSpaceKey() + " was found");
         }
-        return String.valueOf(resultList.get(0).getId());
+
+        /*
+         * Should NEVER happen, because Confluence does not allow multiple pages with the same name in a space.
+         * But you never know which bugs are present in Confluence or which new features are coming in future versions!
+         * Better safe than sorry.
+         */
+        if (content.getResults().size() > 1) {
+            throw new IllegalStateException("Multiple possible pages with title " + getStep().getTitle()
+                    + "in space with key " + getStep().getSpaceKey() + " were found");
+        }
+
+        return String.valueOf(content.getResults().get(0).getId());
     }
 
     private Page requestOldPageContent(final String id) {
