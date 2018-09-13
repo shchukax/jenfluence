@@ -24,6 +24,10 @@ public class AttachFileExecution extends AbstractStepExecution<String, AttachFil
     protected String run() {
         ContentService service = getService(ContentService.class);
         Content pageContent = service.getPage(getStep().getSpaceKey(), getStep().getTitle(), null);
+        if(pageContent.getResults().size() == 0 || pageContent.getResults().get(0).getId() == 0) {
+            throw new IllegalStateException("Page with title " + getStep().getTitle() + " not found in space" +
+                    getStep().getSpaceKey());
+        }
         return service.attachFile(String.valueOf(pageContent.getResults().get(0).getId()),
                 getStep().getFilePath());
     }
