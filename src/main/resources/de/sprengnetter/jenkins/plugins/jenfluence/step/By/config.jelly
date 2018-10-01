@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?jelly escape-by-default='true'?>
+<j:jelly
+        xmlns:j="jelly:core"
+        xmlns:st="jelly:stapler"
+        xmlns:d="jelly:define"
+        xmlns:l="/lib/layout"
+        xmlns:t="/lib/hudson"
+        xmlns:f="/lib/form"
+        xmlns:i="jelly:fmt">
+
+        <f:entry name="value" title="Type of parent identifier" field="value">
+            <select name="value">
+                <option value="NONE">No parent</option>
+                <option value="ID">Identified parentPage page ID</option>
+                <option value="TITLE">Identified parentPage page title</option>
+            </select>
+        </f:entry>
+
+        <f:entry field="parentIdentifier" title="Parent identifier" description="Identifier of the parent page">
+            <f:textbox/>
+        </f:entry>
+</j:jelly>

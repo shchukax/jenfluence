@@ -1,6 +1,7 @@
 package de.sprengnetter.jenkins.plugins.jenfluence.step.descriptor;
 
 import javax.annotation.Nonnull;
+
 import org.jenkinsci.plugins.workflow.steps.StepContext;
 import org.jenkinsci.plugins.workflow.steps.StepExecution;
 import org.kohsuke.stapler.DataBoundConstructor;
@@ -22,7 +23,7 @@ public class CreatePageStep extends AbstractStep {
     private String title;
     private String spaceKey;
     private String content;
-    private By by;
+    private By parentPage;
 
     /**
      * Constructor which takes the necessary information to create a page.
@@ -31,17 +32,17 @@ public class CreatePageStep extends AbstractStep {
      *        The title of the page.
      * @param spaceKey
      *        The key of the space.
-     * @param by
+     * @param parentPage
      *        The specification of an optional parent page.
      * @param content
      *        The content of the page (can be in HTML format).
      */
     @DataBoundConstructor
-    public CreatePageStep(final String title, final String spaceKey, final By by, final String content) {
+    public CreatePageStep(final String title, final String spaceKey, final By parentPage, final String content) {
         super();
         this.title = title;
         this.spaceKey = spaceKey;
-        this.by = by;
+        this.parentPage = parentPage;
         this.content = content;
     }
 
@@ -59,7 +60,7 @@ public class CreatePageStep extends AbstractStep {
      * @return True if the input String equals the value defined in {@link By}.
      */
     public String isIdentifiedBy(final String identifiedBy) {
-        return this.by.getValue().equalsIgnoreCase(identifiedBy) ? "true" : "";
+        return this.parentPage.getValue().equalsIgnoreCase(identifiedBy) ? "true" : "";
     }
 
     /**
@@ -94,8 +95,8 @@ public class CreatePageStep extends AbstractStep {
      *
      * @return The specification of the parent page.
      */
-    public By getBy() {
-        return by;
+    public By getParentPage() {
+        return parentPage;
     }
 
     @Extension

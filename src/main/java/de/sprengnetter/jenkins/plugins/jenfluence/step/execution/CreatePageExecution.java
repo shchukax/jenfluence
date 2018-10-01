@@ -68,12 +68,12 @@ public class CreatePageExecution extends AbstractStepExecution<PageCreated, Crea
 
         Ancestor ancestor = new Ancestor();
 
-        switch (getStep().getBy().getValue().toLowerCase()) {
+        switch (getStep().getParentPage().getValue().toLowerCase()) {
             case "title":
                 ancestor.setId(getParentId());
                 break;
             case "id":
-                ancestor.setId(Integer.parseInt(getStep().getBy().getParentIdentifier()));
+                ancestor.setId(Integer.parseInt(getStep().getParentPage().getParentIdentifier()));
                 break;
             default:
                 ancestor = null;
@@ -100,10 +100,10 @@ public class CreatePageExecution extends AbstractStepExecution<PageCreated, Crea
 
     private Integer getParentId() {
         ContentService service = getService(ContentService.class);
-        Content content = service.getPage(getStep().getSpaceKey(), getStep().getBy().getParentIdentifier(), null);
+        Content content = service.getPage(getStep().getSpaceKey(), getStep().getParentPage().getParentIdentifier(), null);
 
         if (content.getResults().size() == 0 || content.getResults().get(0).getId() == null) {
-            throw new IllegalStateException("No parent page with name " + getStep().getBy().getParentIdentifier() + " in space with key "
+            throw new IllegalStateException("No parent page with name " + getStep().getParentPage().getParentIdentifier() + " in space with key "
                     + getStep().getSpaceKey() + " was found");
         }
 
@@ -113,7 +113,7 @@ public class CreatePageExecution extends AbstractStepExecution<PageCreated, Crea
          * Better safe than sorry.
          */
         if (content.getResults().size() > 1) {
-            throw new IllegalStateException("Multiple possible parent pages with the name " + getStep().getBy().getParentIdentifier()
+            throw new IllegalStateException("Multiple possible parent pages with the name " + getStep().getParentPage().getParentIdentifier()
                     + "in space with key " + getStep().getSpaceKey() + " were found");
         }
         return content.getResults().get(0).getId();

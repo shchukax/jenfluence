@@ -20,17 +20,9 @@
     </f:section>
 
     <f:advanced title="Parent page">
-        <f:entry name="value" title="Type of parent identifier" field="value">
-            <select name="value">
-                <option value="NONE">No parent</option>
-                <option value="ID">Identified by page ID</option>
-                <option value="TITLE">Identified by page title</option>
-            </select>
-        </f:entry>
-
-        <f:entry field="parentIdentifier" title="Parent identifier" description="Identifier of the parent page">
-            <f:textbox/>
-        </f:entry>
+        <f:property field="parentPage">
+            <st:include page="config.jelly"/>
+        </f:property>
     </f:advanced>
 
     <f:section title="Content">

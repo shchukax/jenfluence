@@ -11,7 +11,7 @@
 
     <groupId>de.sprengnetter.jenkins.plugins</groupId>
     <artifactId>confluence-pipeline-steps</artifactId>
-    <version>0.3.3</version>
+    <version>0.3.4</version>
     <packaging>hpi</packaging>
     <name>Confluence Pipeline Steps Plugin</name>
     <inceptionYear>2017</inceptionYear>
